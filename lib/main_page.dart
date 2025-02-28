@@ -19,6 +19,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   List<ImageResponse> info = [];
+  List<Widget> cachedImages = [];
   int liked = 0;
   int disliked = 0;
   int activeRequests = 0;
@@ -34,7 +35,10 @@ class _MainPageState extends State<MainPage> {
   }
 
   void loadNew({bool forceUpdate = false}) {
-    if (info.isNotEmpty) info.removeAt(0);
+    if (info.isNotEmpty) {
+      info.removeAt(0);
+      cachedImages.removeAt(0);
+    }
     if (info.isNotEmpty && forceUpdate) {
       setState(() {});
     }
@@ -47,8 +51,10 @@ class _MainPageState extends State<MainPage> {
       }
       logger.info("Load request finished");
       info.add(value);
+      cachedImages.add(Image.network(value.url, color: Colors.transparent));
       activeRequests--;
-      if (info.length == 1) {
+      // activeRequests is checked on 0 to force update and build of hided images so that they are loaded in cache
+      if (info.length == 1 || activeRequests == 0) {
         setState(() {
           info = info;
         });
@@ -125,6 +131,7 @@ class _MainPageState extends State<MainPage> {
                   ],
                 ))),
         body: Stack(children: [
+          ...cachedImages,
           Align(
             alignment: Alignment.topLeft,
             child: ClipRRect(
