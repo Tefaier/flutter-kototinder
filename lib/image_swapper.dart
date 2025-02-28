@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import 'tools/logger.dart';
@@ -48,8 +46,7 @@ class ImageSwapper extends StatelessWidget {
       },
       onVerticalDragEnd: (details) {
         var deltaY = details.globalPosition.dy - dragYStart;
-        if ((deltaY).abs() > deltaThreshold &&
-            onSwipe != null) {
+        if ((deltaY).abs() > deltaThreshold && onSwipe != null) {
           onSwipe!(forceUpdate: true);
         }
       },
@@ -64,7 +61,7 @@ class ImageSwapper extends StatelessWidget {
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Stack(children: [
-                      Container(
+                      SizedBox(
                           height: double.infinity,
                           child: Image.network(imageSource, fit: BoxFit.cover,
                               loadingBuilder:
@@ -91,7 +88,7 @@ class ImageSwapper extends StatelessWidget {
                       basicDescription != null
                           ? Align(
                               alignment: Alignment.bottomCenter,
-                              child: Container(
+                              child: SizedBox(
                                   width: double.infinity,
                                   child: Card.filled(
                                       color: const Color.fromARGB(200, 0, 0, 0),
