@@ -9,7 +9,7 @@ import 'tools/logger.dart';
 
 class MainPage extends StatefulWidget {
   final VoidCallback? themeSwap;
-  final int cardsToHold = 3;
+  final int cardsToHold = 2;
 
   const MainPage({super.key, this.themeSwap});
 
@@ -40,7 +40,9 @@ class _MainPageState extends State<MainPage> {
       cachedImages.removeAt(0);
     }
     if (info.isNotEmpty && forceUpdate) {
-      setState(() {});
+      setState(() {
+        info = info;
+      });
     }
     logger.info("Load request made");
     activeRequests++;
@@ -97,17 +99,6 @@ class _MainPageState extends State<MainPage> {
                         children: [
                           IconBurronCounter(
                             icon: const ImageIcon(
-                                AssetImage("assets/icons/like.png"),
-                                size: 30,
-                                color: Color.fromARGB(255, 255, 60, 0)),
-                            number: liked,
-                            onClick: () {
-                              loadNew();
-                              likingAction(true);
-                            },
-                          ),
-                          IconBurronCounter(
-                            icon: const ImageIcon(
                                 AssetImage("assets/icons/dislike.png"),
                                 size: 30,
                                 color: Color.fromARGB(255, 0, 81, 255)),
@@ -115,6 +106,17 @@ class _MainPageState extends State<MainPage> {
                             onClick: () {
                               loadNew();
                               likingAction(false);
+                            },
+                          ),
+                          IconBurronCounter(
+                            icon: const ImageIcon(
+                                AssetImage("assets/icons/like.png"),
+                                size: 30,
+                                color: Color.fromARGB(255, 255, 60, 0)),
+                            number: liked,
+                            onClick: () {
+                              loadNew();
+                              likingAction(true);
                             },
                           )
                         ],
