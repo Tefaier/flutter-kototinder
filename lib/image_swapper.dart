@@ -53,8 +53,8 @@ class ImageSwapper extends StatelessWidget {
       child: Center(
           child: ConstrainedBox(
               constraints: BoxConstraints(
-                  minHeight: MediaQuery.sizeOf(context).height * 0.75,
-                  maxHeight: MediaQuery.sizeOf(context).height * 0.75,
+                  minHeight: MediaQuery.sizeOf(context).height * 0.8,
+                  maxHeight: MediaQuery.sizeOf(context).height * 0.8,
                   maxWidth: MediaQuery.sizeOf(context).width * 0.9),
               child: AspectRatio(
                 aspectRatio: 0.7,

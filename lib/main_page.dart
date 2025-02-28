@@ -36,7 +36,7 @@ class _MainPageState extends State<MainPage> {
   void loadNew({bool forceUpdate = false}) {
     if (info.isNotEmpty) info.removeAt(0);
     if (info.isNotEmpty && forceUpdate) {
-      setState((){});
+      setState(() {});
     }
     logger.info("Load request made");
     activeRequests++;
@@ -89,18 +89,28 @@ class _MainPageState extends State<MainPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         spacing: 20,
                         children: [
-                          IconCounter(
-                              icon: const ImageIcon(
-                                  AssetImage("assets/icons/like.png"),
-                                  size: 30,
-                                  color: Color.fromARGB(255, 255, 60, 0)),
-                              number: liked),
-                          IconCounter(
-                              icon: const ImageIcon(
-                                  AssetImage("assets/icons/dislike.png"),
-                                  size: 30,
-                                  color: Color.fromARGB(255, 0, 81, 255)),
-                              number: disliked)
+                          IconBurronCounter(
+                            icon: const ImageIcon(
+                                AssetImage("assets/icons/like.png"),
+                                size: 30,
+                                color: Color.fromARGB(255, 255, 60, 0)),
+                            number: liked,
+                            onClick: () {
+                              loadNew();
+                              likingAction(true);
+                            },
+                          ),
+                          IconBurronCounter(
+                            icon: const ImageIcon(
+                                AssetImage("assets/icons/dislike.png"),
+                                size: 30,
+                                color: Color.fromARGB(255, 0, 81, 255)),
+                            number: disliked,
+                            onClick: () {
+                              loadNew();
+                              likingAction(false);
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -118,7 +128,8 @@ class _MainPageState extends State<MainPage> {
           Align(
             alignment: Alignment.topLeft,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(MediaQuery.sizeOf(context).shortestSide * 0.1 * 0.2),
+              borderRadius: BorderRadius.circular(
+                  MediaQuery.sizeOf(context).shortestSide * 0.1 * 0.2),
               clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Image(
                   image: const AssetImage("assets/Kototinder_icon.png"),
