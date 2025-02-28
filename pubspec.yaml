@@ -1,0 +1,47 @@
+name: flutter_hw_lototinder
+description: Flutter project for hw number 1
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.1.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  logging: ^1.2.0
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  http: ^1.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter:
+  generate: true
+  uses-material-design: true
+  
+  assets:
+    - assets/icons/dislike.svg
+    - assets/icons/like.svg
+    - assets/icons/dislike.png
+    - assets/icons/like.png
+    - assets/Kototinder_icon.png
+    
+  # fonts:
+  #   - family: Roboto
+  #     fonts:
+  #       - asset: fonts/Roboto-Light.ttf
+  #   - family: CVIcons
+  #     fonts:
+  #       - asset: icons/CVIcons.ttf
+
+# run: flutter pub run flutter_launcher_icons:main
+flutter_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/Kototinder_icon.png"
