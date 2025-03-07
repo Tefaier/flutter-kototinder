@@ -82,12 +82,13 @@ class DetailsPage extends StatelessWidget {
                         padding: const EdgeInsets.all(10),
                         child: MediaQuery.sizeOf(context).aspectRatio >= 1
                           ? Row(
+                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               spacing: MediaQuery.sizeOf(context).width * 0.03,
                               children: contentWidgets,
                             )
                           : Column(
-                            mainAxisSize: MainAxisSize.min,
+                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               spacing: MediaQuery.sizeOf(context).height * 0.03,
                               children: contentWidgets,

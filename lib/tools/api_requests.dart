@@ -31,9 +31,27 @@ ImageResponse? thecatapiParser(dynamic info) {
   return ImageResponse.fromJson(parsed);
 }
 
+ImageResponse? nekosapiParser(dynamic info) {
+  if (info == null) return null;
+  Map<String, String?> parsed = {};
+  info = info["results"];
+  info = info[0];
+  parsed["url"] = info["url"];
+  parsed["name"] = "By ${info["artist_name"]}";
+  parsed["general"] = "";
+  parsed["description"] = "";
+  return ImageResponse.fromJson(parsed);
+}
+
+// propable api
+// https://api.nekosapi.com/v4/images/random?tags=boy&without_tags=girl&rating=safe
+// https://nekosapi.com/docs/images/random
+// problem - is not SFW even with rating safe
+
 enum AwailableAPIs {
   cats("thecatapi", "https://api.thecatapi.com/v1/images/search?has_breeds=1&api_key=live_o8038oqDil8T8qkhapTShngvUDx2B8gjkmIIAXFC0m7Js2rsqL6y8GddBEH6vQOf", thecatapiParser),
-  notCats("thecatapi", "https://api.thecatapi.com/v1/images/search?has_breeds=1&api_key=live_o8038oqDil8T8qkhapTShngvUDx2B8gjkmIIAXFC0m7Js2rsqL6y8GddBEH6vQOf", thecatapiParser);
+  boys("nekosSFWboys", "https://nekos.best/api/v2/husbando", nekosapiParser),
+  girls("nekosSFWgirls", "https://nekos.best/api/v2/neko", nekosapiParser);
 
   final String name;
   final String getRequest;

@@ -9,7 +9,7 @@ import 'tools/logger.dart';
 
 class MainPage extends StatefulWidget {
   final VoidCallback? themeSwap;
-  final int cardsToHold = 2;
+  final int cardsToHold = 4;
 
   const MainPage({super.key, this.themeSwap});
 
@@ -20,6 +20,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List<ImageResponse> info = [];
   List<Widget> cachedImages = [];
+  AwailableAPIs chosenAPI = AwailableAPIs.cats;
   int liked = 0;
   int disliked = 0;
   int activeRequests = 0;
@@ -46,7 +47,7 @@ class _MainPageState extends State<MainPage> {
     }
     logger.info("Load request made");
     activeRequests++;
-    ApiRequests.makeRequest(AwailableAPIs.cats).then((value) {
+    ApiRequests.makeRequest(chosenAPI).then((value) {
       if (value == null) {
         Future.delayed(const Duration(seconds: 10), loadNew);
         return;
@@ -69,6 +70,15 @@ class _MainPageState extends State<MainPage> {
         MaterialPageRoute(builder: (context) => DetailsPage(info: info[0])));
   }
 
+  void setAPI(AwailableAPIs api) {
+    if (api == chosenAPI) return;
+    setState(() {
+      info = [];
+      cachedImages = [];
+      chosenAPI = api;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     for (var _ in List.generate(
@@ -87,49 +97,78 @@ class _MainPageState extends State<MainPage> {
                         : const Color.fromARGB(255, 200, 200, 200),
                     width: 3)),
             child: Padding(
-                padding: const EdgeInsetsDirectional.symmetric(horizontal: 20),
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Expanded(
+                      flex: MediaQuery.sizeOf(context).aspectRatio < 0.8 ? 3 : 1,
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      spacing: 10,
+                      children: [
+                        IconBurronCounter(
+                          icon: const ImageIcon(
+                              AssetImage("assets/icons/dislike.png"),
+                              size: 25,
+                              color: Color.fromARGB(255, 0, 81, 255)),
+                          number: disliked,
+                          onClick: () {
+                            loadNew();
+                            likingAction(false);
+                          },
+                        ),
+                        IconBurronCounter(
+                          icon: const ImageIcon(
+                              AssetImage("assets/icons/like.png"),
+                              size: 25,
+                              color: Color.fromARGB(255, 255, 60, 0)),
+                          number: liked,
+                          onClick: () {
+                            loadNew();
+                            likingAction(true);
+                          },
+                        )
+                      ],
+                    )),
+                    const Spacer(),
                     Flexible(
-                      fit: FlexFit.tight,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        spacing: 20,
-                        children: [
-                          IconBurronCounter(
-                            icon: const ImageIcon(
-                                AssetImage("assets/icons/dislike.png"),
-                                size: 30,
-                                color: Color.fromARGB(255, 0, 81, 255)),
-                            number: disliked,
-                            onClick: () {
-                              loadNew();
-                              likingAction(false);
-                            },
-                          ),
-                          IconBurronCounter(
-                            icon: const ImageIcon(
-                                AssetImage("assets/icons/like.png"),
-                                size: 30,
-                                color: Color.fromARGB(255, 255, 60, 0)),
-                            number: liked,
-                            onClick: () {
-                              loadNew();
-                              likingAction(true);
-                            },
+                        flex: 0,
+                        child: Row(
+                          spacing: 10,
+                          children: [
+                            IconButton(
+                                onPressed: () => setAPI(AwailableAPIs.boys),
+                                icon: const ImageIcon(
+                                    AssetImage("assets/icons/boy.png"),
+                                    size: 30)),
+                            IconButton(
+                                onPressed: () => setAPI(AwailableAPIs.cats),
+                                icon: const ImageIcon(
+                                    AssetImage("assets/icons/cat.png"),
+                                    size: 30)),
+                            IconButton(
+                                onPressed: () => setAPI(AwailableAPIs.girls),
+                                icon: const ImageIcon(
+                                    AssetImage("assets/icons/girl.png"),
+                                    size: 30))
+                          ],
+                        )),
+                    const Spacer(),
+                    Expanded(
+                      flex: 1,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                          IconButton(
+                            onPressed: widget.themeSwap,
+                            icon: Icon(
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Icons.sunny
+                                  : Icons.mode_night,
+                            ),
                           )
-                        ],
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: widget.themeSwap,
-                      icon: Icon(
-                        Theme.of(context).brightness == Brightness.light
-                            ? Icons.sunny
-                            : Icons.mode_night,
-                      ),
-                    )
+                        ]))
                   ],
                 ))),
         body: Stack(children: [

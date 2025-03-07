@@ -35,7 +35,10 @@ class _ImageSwapperState extends State<ImageSwapper> {
 
   double computeOffset(double delta, double limit, double sensitivity) {
     if (delta.abs() < deltaThreshold) return 0;
-    return limit * atan((delta - deltaThreshold * delta.sign) * sensitivity) * 2 / pi;
+    return limit *
+        atan((delta - deltaThreshold * delta.sign) * sensitivity) *
+        2 /
+        pi;
   }
 
   @override
@@ -94,31 +97,37 @@ class _ImageSwapperState extends State<ImageSwapper> {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Stack(children: [
-                          SizedBox(
-                              height: double.infinity,
-                              child: Image.network(widget.imageSource,
-                                  fit: BoxFit.cover, loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                }
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              }, frameBuilder: (_, child, frame, ___) {
-                                return AnimatedOpacity(
-                                  duration: const Duration(milliseconds: 200),
-                                  opacity: frame != null ? 1.0 : 0,
-                                  child: frame != null ? child : Container(),
-                                );
-                              })),
+                          Align(
+                              alignment: Alignment.center,
+                              child: SizedBox(
+                                  height: double.infinity,
+                                  child: Image.network(widget.imageSource,
+                                      fit: BoxFit.cover, loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      return child;
+                                    }
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    );
+                                  }, frameBuilder: (_, child, frame, ___) {
+                                    return AnimatedOpacity(
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      opacity: frame != null ? 1.0 : 0,
+                                      child:
+                                          frame != null ? child : Container(),
+                                    );
+                                  }))),
                           widget.basicDescription != null
                               ? Align(
                                   alignment: Alignment.bottomCenter,
