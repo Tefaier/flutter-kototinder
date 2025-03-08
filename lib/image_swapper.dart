@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'tools/logger.dart';
-
 class ImageSwapper extends StatefulWidget {
   final String imageSource;
   final String? basicDescription;
@@ -129,24 +127,26 @@ class _ImageSwapperState extends State<ImageSwapper> {
                                     );
                                   }))),
                           widget.basicDescription != null
-                              ? Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: SizedBox(
-                                      width: double.infinity,
-                                      child: Card.filled(
-                                          color: const Color.fromARGB(
-                                              200, 0, 0, 0),
-                                          child: Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: Text(
-                                                widget.basicDescription!,
-                                                softWrap: true,
-                                                style: const TextStyle(
-                                                    color: Color.fromARGB(
-                                                        255, 255, 255, 255),
-                                                    overflow:
-                                                        TextOverflow.fade),
-                                              )))))
+                              ? LayoutBuilder(
+                                  builder: (context, constraints) => Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: SizedBox(
+                                          width: constraints.maxWidth,
+                                          child: Card.filled(
+                                              color: const Color.fromARGB(
+                                                  200, 0, 0, 0),
+                                              child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(10),
+                                                  child: Text(
+                                                    widget.basicDescription!,
+                                                    softWrap: true,
+                                                    style: const TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 255, 255, 255),
+                                                        overflow:
+                                                            TextOverflow.fade),
+                                                  ))))))
                               : Container()
                         ])),
                   )))),
