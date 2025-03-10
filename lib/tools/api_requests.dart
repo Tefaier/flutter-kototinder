@@ -43,15 +43,29 @@ ImageResponse? nekosapiParser(dynamic info) {
   return ImageResponse.fromJson(parsed);
 }
 
+ImageResponse? rabbitsapiParser(dynamic info) {
+  if (info == null) return null;
+  Map<String, String?> parsed = {};
+  parsed["url"] = info["url"];
+  parsed["name"] = "Breed ${info["breed"]}";
+  parsed["general"] = "";
+  parsed["description"] = "";
+  return ImageResponse.fromJson(parsed);
+}
+
 // propable api
 // https://api.nekosapi.com/v4/images/random?tags=boy&without_tags=girl&rating=safe
 // https://nekosapi.com/docs/images/random
 // problem - is not SFW even with rating safe
 
+// https://rabbit-api-two.vercel.app/api/random
+// rabbits
+
 enum AwailableAPIs {
   cats("thecatapi", "https://api.thecatapi.com/v1/images/search?has_breeds=1&api_key=live_o8038oqDil8T8qkhapTShngvUDx2B8gjkmIIAXFC0m7Js2rsqL6y8GddBEH6vQOf", thecatapiParser),
   boys("nekosSFWboys", "https://nekos.best/api/v2/husbando", nekosapiParser),
-  girls("nekosSFWgirls", "https://nekos.best/api/v2/neko", nekosapiParser);
+  girls("nekosSFWgirls", "https://nekos.best/api/v2/neko", nekosapiParser),
+  rabbits("rabbitsapi", "https://rabbit-api-two.vercel.app/api/random", rabbitsapiParser);
 
   final String name;
   final String getRequest;
