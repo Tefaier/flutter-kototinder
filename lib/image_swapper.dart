@@ -99,6 +99,7 @@ class _ImageSwapperState extends State<ImageSwapper> {
                               alignment: Alignment.center,
                               child: SizedBox(
                                   height: double.infinity,
+                                  width: double.infinity,
                                   child: Image.network(widget.imageSource,
                                       fit: BoxFit.cover, loadingBuilder:
                                           (context, child, loadingProgress) {

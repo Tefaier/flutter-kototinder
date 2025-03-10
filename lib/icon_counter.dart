@@ -14,12 +14,15 @@ class IconBurronCounter extends StatelessWidget {
       spacing: 5,
       children: [
         IconButton(onPressed: onClick, icon: icon),
-        FittedBox(
-            fit: BoxFit.fitHeight,
-            child: Text(
-              "$number",
-              style: const TextStyle(fontSize: 25),
-            ))
+        SizedBox(
+            height: icon.size,
+            width: icon.size,
+            child: FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                  "$number",
+                  style: const TextStyle(fontSize: 25),
+                )))
       ],
     );
   }
