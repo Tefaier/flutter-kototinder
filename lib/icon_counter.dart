@@ -11,7 +11,7 @@ class IconBurronCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      spacing: 5,
+      spacing: 0,
       children: [
         IconButton(onPressed: onClick, icon: icon),
         SizedBox(
