@@ -1,11 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'details_page.dart';
-import 'icon_counter.dart';
-import 'image_swapper.dart';
-import 'tools/api_requests.dart';
-import 'tools/logger.dart';
+import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
+import 'package:flutter_hw_lototinder/src/state/like_history_notifier.dart';
+import './details_page.dart';
+import '../components/icon_counter.dart';
+import '../components/image_swapper.dart';
+import '/src/utils/api_requests.dart';
+import '/src/utils/logger.dart';
 
 class MainPage extends StatefulWidget {
   final VoidCallback? themeSwap;
@@ -18,7 +20,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<ImageResponse> info = [];
+  late final LikesNotifier _notifier;
+  List<ImageInfo> info = [];
   List<Widget> cachedImages = [];
   AwailableAPIs chosenAPI = AwailableAPIs.cats;
   int liked = 0;
@@ -66,8 +69,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   void showDetails() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => DetailsPage(info: info[0])));
+    NavigationManager.instance.openDetails(info[0]);
   }
 
   void setAPI(AwailableAPIs api) {
@@ -77,6 +79,12 @@ class _MainPageState extends State<MainPage> {
       cachedImages = [];
       chosenAPI = api;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _notifier = LikesNotifier([]);
   }
 
   @override

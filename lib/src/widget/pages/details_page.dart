@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'tools/api_requests.dart';
+import 'package:flutter_hw_lototinder/src/model/image_info.dart' as model;
 
 class DetailsPage extends StatelessWidget {
-  final ImageResponse info;
+  final model.ImageInfo info;
 
   const DetailsPage({super.key, required this.info});
 
@@ -47,15 +47,15 @@ class DetailsPage extends StatelessWidget {
                       const TextSpan(
                           text: "Имя: ",
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: '${info.name}\n'),
+                      TextSpan(text: '${info.imageName}\n'),
                       const TextSpan(
                           text: "Характеристики: ",
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: '${info.characteristics}\n'),
+                      TextSpan(text: '${info.extraInfo?['characteristics'] ?? ''}\n'),
                       const TextSpan(
                           text: "Описание: ",
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: '${info.description}\n')
+                      TextSpan(text: '${info.extraInfo?['description'] ?? ''}\n')
                     ]),
                 softWrap: true,
               )))

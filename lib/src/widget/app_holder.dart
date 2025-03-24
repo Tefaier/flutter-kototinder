@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'main_page.dart';
-import 'tools/app_theme.dart';
-import 'tools/localization.dart';
+import '/src/navigation/routes.dart';
+import '/src/navigation/navigation_manager.dart';
+import '/src/utils/app_theme.dart';
+import '/src/utils/localization.dart';
 
-class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+class App extends StatefulWidget {
+  const App({super.key});
 
   @override
-  State<MainApp> createState() => _MainAppState();
+  State<App> createState() => _AppState();
 }
 
-class _MainAppState extends State<MainApp> {
+class _AppState extends State<App> {
   bool isDark = false;
 
   void themeSwap() {
@@ -33,14 +34,11 @@ class _MainAppState extends State<MainApp> {
         Locale('en'),
         Locale('ru'),
       ],
+      debugShowCheckedModeBanner: false,
       theme: AppTheme.theme(isDark),
-      initialRoute: '/',
-      routes: {
-        '/': (BuildContext context) => MainPage(themeSwap: themeSwap),
-        // '/details': (BuildContext context) => DetailsPage(info: )
-      }
+      initialRoute: RouteNames.main,
+      onGenerateRoute: RoutesBuilder.onGenerateRoute,
+      navigatorKey: NavigationManager.instance.key,
     );
   }
 }
-
-
