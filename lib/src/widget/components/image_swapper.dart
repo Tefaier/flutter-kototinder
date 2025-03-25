@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ImageSwapper extends StatefulWidget {
   final String imageSource;
   final String? basicDescription;
-  final void Function({bool forceUpdate})? onSwipe;
+  final VoidCallback? onSwipe;
   final VoidCallback? onRight;
   final VoidCallback? onLeft;
   final VoidCallback? onExpand;
@@ -70,7 +70,7 @@ class _ImageSwapperState extends State<ImageSwapper> {
       },
       onVerticalDragEnd: (details) {
         if ((currentDY).abs() > deltaThreshold && widget.onSwipe != null) {
-          widget.onSwipe!(forceUpdate: true);
+          widget.onSwipe!();
         }
         currentDY = 0;
       },
