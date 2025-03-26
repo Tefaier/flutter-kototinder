@@ -5,6 +5,9 @@ import 'package:flutter_hw_lototinder/src/state/likes_history_notifier.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/bottom_navigation_holder.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/input_with_delete.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/likes_history_list.dart';
+import 'package:get_it/get_it.dart';
+
+GetIt getIt = GetIt.instance;
 
 class LikesPage extends StatefulWidget {
   const LikesPage({super.key});
@@ -19,23 +22,17 @@ class _LikesPageState extends State<LikesPage> {
   @override
   void initState() {
     super.initState();
-    _notifier = LikesHistoryNotifier(history: []);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _notifier.setHistory(ModalRoute.of(context)?.settings.arguments as List<LikeInteraction>);
+    _notifier = getIt<LikesHistoryNotifier>();
   }
 
   @override
   void dispose() {
-    _notifier.dispose();
     super.dispose();
+    _notifier.dispose();
   }
 
   void popSelf() {
-    NavigationManager.instance.pop(_notifier.history);
+    getIt<NavigationManager>().pop(_notifier.history);
   }
 
   @override

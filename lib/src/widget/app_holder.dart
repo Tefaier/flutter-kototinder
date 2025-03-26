@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
 import '/src/navigation/routes.dart';
 import '/src/navigation/navigation_manager.dart';
 import '/src/utils/app_theme.dart';
 import '/src/utils/localization.dart';
+
+GetIt getIt = GetIt.instance;
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -38,7 +41,7 @@ class _AppState extends State<App> {
       theme: AppTheme.theme(isDark),
       initialRoute: RouteNames.main,
       onGenerateRoute: RoutesBuilder.onGenerateRoute,
-      navigatorKey: NavigationManager.instance.key,
+      navigatorKey: getIt<NavigationManager>().key,
     );
   }
 }

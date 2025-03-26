@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class LoadableImage extends StatelessWidget {
-  String url;
-  BoxFit fit;
+  final String url;
+  final BoxFit fit;
 
-  LoadableImage({super.key, required this.url, required this.fit});
+  const LoadableImage({super.key, required this.url, required this.fit});
 
   @override
   Widget build(BuildContext context) {

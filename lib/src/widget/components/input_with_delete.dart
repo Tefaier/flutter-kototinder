@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class InputWithDelete extends StatefulWidget {
-  void Function(String)? onChange;
+  final void Function(String)? onChange;
 
-  InputWithDelete({super.key, this.onChange});
+  const InputWithDelete({super.key, this.onChange});
 
   @override
   State<StatefulWidget> createState() => _InputWithDeleteState();

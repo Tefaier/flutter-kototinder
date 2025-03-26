@@ -7,8 +7,11 @@ import 'package:flutter_hw_lototinder/src/state/images_history_notifier.dart';
 import 'package:flutter_hw_lototinder/src/state/images_loader.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/bottom_navigation_holder.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/logo_icon.dart';
+import 'package:get_it/get_it.dart';
 import '../components/icon_counter.dart';
 import '../components/image_swapper.dart';
+
+GetIt getIt = GetIt.instance;
 
 class MainPage extends StatefulWidget {
   final VoidCallback? themeSwap;
@@ -41,18 +44,18 @@ class _MainPageState extends State<MainPage> {
   }
 
   void loadNew() {
-    ImagesLoader.instance.loadImages(1, chosenAPI, _notifier.addLoadedInfo);
+    getIt<ImagesLoader>().loadImages(1, chosenAPI, _notifier.addLoadedInfo);
   }
 
   void showDetails() {
     if (shownImage != null) {
-      NavigationManager.instance.openDetails(shownImage!);
+      getIt<NavigationManager>().openDetails(shownImage!);
     }
   }
 
   void setAPI(AwailableAPIs api) {
     if (api == chosenAPI) return;
-    ImagesLoader.instance.loadImagesUpTo(
+    getIt<ImagesLoader>().loadImagesUpTo(
         ImagesLoader.keepLoadedSetting,
         () => (_notifier.value.loadedImages[api]?.length ?? 0),
         api,
@@ -65,7 +68,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   void showLikesPage() {
-    NavigationManager.instance
+    getIt<NavigationManager>()
         .openLikeHistory(_notifier.value.likesHistory)
         .then((newHistory) => _notifier.value.likesHistory = newHistory);
   }
@@ -73,8 +76,8 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    _notifier = ImagesNotifier(value: app_model.AppState());
-    ImagesLoader.instance.loadImagesUpTo(
+    _notifier = getIt<ImagesNotifier>();
+    getIt<ImagesLoader>().loadImagesUpTo(
         ImagesLoader.keepLoadedSetting,
         () => (_notifier.value.loadedImages[chosenAPI]?.length ?? 0),
         chosenAPI,
@@ -84,7 +87,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void dispose() {
     super.dispose();
-    _notifier.dispose();
+    getIt<ImagesNotifier>().dispose();
     // TODO check if to terminate ImagesLoader operations
   }
 

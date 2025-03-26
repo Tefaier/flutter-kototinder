@@ -3,6 +3,9 @@ import 'package:flutter_hw_lototinder/src/model/like_interaction.dart';
 import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
 import 'package:flutter_hw_lototinder/src/state/likes_history_notifier.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/loadable_image.dart';
+import 'package:get_it/get_it.dart';
+
+GetIt getIt = GetIt.instance;
 
 class HistoryList extends StatelessWidget {
   final List<LikeInteraction> content;
@@ -53,7 +56,7 @@ class _HistoryItem extends StatelessWidget {
             OutlinedButton(
                 style:
                     OutlinedButton.styleFrom(side: const BorderSide(width: 3)),
-                onPressed: () => NavigationManager.instance
+                onPressed: () => getIt<NavigationManager>()
                     .openDetails(interaction.imageInfo),
                 child: LoadableImage(
                     url: interaction.imageInfo.url, fit: BoxFit.fitHeight)),

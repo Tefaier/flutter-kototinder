@@ -3,8 +3,6 @@ import 'package:flutter_hw_lototinder/src/model/image_info.dart';
 import 'package:flutter_hw_lototinder/src/utils/api_requests.dart';
 
 class ImagesLoader {
-  ImagesLoader._();
-  static final instance = ImagesLoader._();
   static const int keepLoadedSetting = 3;
   static const Duration reloadDelay = Duration(seconds: 10);
 
