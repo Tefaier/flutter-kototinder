@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hw_lototinder/src/widget/components/loadable_image.dart';
 
 class ImageSwapper extends StatefulWidget {
   final String imageSource;
@@ -100,33 +101,7 @@ class _ImageSwapperState extends State<ImageSwapper> {
                               child: SizedBox(
                                   height: double.infinity,
                                   width: double.infinity,
-                                  child: Image.network(widget.imageSource,
-                                      fit: BoxFit.cover, loadingBuilder:
-                                          (context, child, loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    }
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes!
-                                            : null,
-                                      ),
-                                    );
-                                  }, frameBuilder: (_, child, frame, ___) {
-                                    return AnimatedOpacity(
-                                      duration:
-                                          const Duration(milliseconds: 200),
-                                      opacity: frame != null ? 1.0 : 0,
-                                      child:
-                                          frame != null ? child : Container(),
-                                    );
-                                  }))),
+                                  child: LoadableImage(url: widget.imageSource, fit: BoxFit.cover))),
                           widget.basicDescription != null
                               ? LayoutBuilder(
                                   builder: (context, constraints) => Align(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_hw_lototinder/src/model/image_info.dart' as model;
+import 'package:flutter_hw_lototinder/src/widget/components/loadable_image.dart';
 
 class DetailsPage extends StatelessWidget {
   final model.ImageInfo info;
@@ -12,26 +13,7 @@ class DetailsPage extends StatelessWidget {
     var contentWidgets = [
       Flexible(
           flex: 2,
-          child: Image.network(info.url, fit: MediaQuery.sizeOf(context).aspectRatio >= 1 ? BoxFit.fitHeight : BoxFit.fitWidth,
-              loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) {
-              return child;
-            }
-            return Center(
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                    : null,
-              ),
-            );
-          }, frameBuilder: (_, child, frame, ___) {
-            return AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
-              opacity: frame != null ? 1.0 : 0,
-              child: frame != null ? child : Container(),
-            );
-          })),
+          child: LoadableImage(url: info.url, fit: MediaQuery.sizeOf(context).aspectRatio >= 1 ? BoxFit.fitHeight : BoxFit.fitWidth)),
       Flexible(
           flex: 3,
           child: Padding(
