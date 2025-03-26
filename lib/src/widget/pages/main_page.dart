@@ -74,9 +74,10 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
-  void didUpdateWidget(covariant MainPage oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
+  void dispose() {
+    super.dispose();
+    _notifier.dispose();
+    // TODO check if to terminate ImagesLoader operations
   }
 
   @override

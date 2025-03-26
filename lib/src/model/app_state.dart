@@ -7,10 +7,4 @@ class AppState {
   Map<AwailableAPIs, List<ImageInfo>> loadedImages = {};
 
   AppState();
-
-  @override
-  bool operator ==(Object other) {
-    // TODO: implement ==
-    return super == other;
-  }
 }
