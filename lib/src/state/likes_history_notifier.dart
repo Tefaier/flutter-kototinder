@@ -23,7 +23,7 @@ class LikesHistoryNotifier extends ChangeNotifier {
   }
 
   void setFilterByBreed(String breedText) {
-    setFilter((interaction) => interaction.imageInfo.imageName.contains(breedText));
+    setFilter((interaction) => interaction.imageInfo.imageName.toLowerCase().contains(breedText.toLowerCase()));
   }
 
   void removeInteraction(LikeInteraction interaction) {

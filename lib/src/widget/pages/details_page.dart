@@ -33,7 +33,7 @@ class DetailsPage extends StatelessWidget {
                       const TextSpan(
                           text: "Характеристики: ",
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: '${info.extraInfo?['characteristics'] ?? ''}\n'),
+                      TextSpan(text: '${info.extraInfo?['general'] ?? ''}\n'),
                       const TextSpan(
                           text: "Описание: ",
                           style: TextStyle(fontWeight: FontWeight.bold)),

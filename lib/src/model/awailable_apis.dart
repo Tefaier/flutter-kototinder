@@ -6,11 +6,12 @@ ImageInfo? thecatapiParser(dynamic info) {
   info = info[0];
   parsed["api"] = AwailableAPIs.cats;
   parsed["url"] = info["url"];
-  var breedsInfo = info["breeds"][0];
-  parsed["name"] = breedsInfo["name"];
-  var extra = <String, Object>{};
-  extra["general"] = breedsInfo["temperament"];
-  extra["description"] = breedsInfo["description"];
+  var breedsInfo = info["breeds"] as List;
+  if (breedsInfo.isEmpty) return null;
+  parsed["name"] = breedsInfo[0]["name"];
+  var extra = <String, String>{};
+  extra["general"] = breedsInfo[0]["temperament"];
+  extra["description"] = breedsInfo[0]["description"];
   parsed["extra"] = extra;
   return ImageInfo.fromJson(parsed);
 }

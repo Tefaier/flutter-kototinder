@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hw_lototinder/src/model/like_interaction.dart';
 import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
 import 'package:flutter_hw_lototinder/src/state/likes_history_notifier.dart';
+import 'package:flutter_hw_lototinder/src/utils/logger.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/loadable_image.dart';
 import 'package:get_it/get_it.dart';
 
@@ -13,7 +14,10 @@ class HistoryList extends StatelessWidget {
   const HistoryList({super.key, required this.content});
 
   @override
-  Widget build(BuildContext context) => ListView.separated(
+  Widget build(BuildContext context) {
+    logger.info("History rendered");
+    if (content.isNotEmpty) {
+      return ListView.separated(
         itemBuilder: (context, index) => _HistoryItem(
           index,
           content[index],
@@ -26,13 +30,16 @@ class HistoryList extends StatelessWidget {
         ),
         itemCount: content.length,
       );
+    }
+    return const Center(child: Text(style: TextStyle(fontSize: 25), "No entries to display"));
+  }
 }
 
 class _HistoryItem extends StatelessWidget {
-  int index;
-  LikeInteraction interaction;
+  final int index;
+  final LikeInteraction interaction;
 
-  _HistoryItem(this.index, this.interaction);
+  const _HistoryItem(this.index, this.interaction);
 
   void deleteSelf(BuildContext context) {
     var notifier = LikesHistoryInheritedNotifier.of(context);

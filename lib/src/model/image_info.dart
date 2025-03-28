@@ -13,6 +13,6 @@ class ImageInfo {
         apiSource: json["api"] as AwailableAPIs,
         url: json["url"] as String,
         imageName: (json["name"] ?? '') as String,
-        extraInfo: json["extra"] as Map<String, String>?);
+        extraInfo: json["extra"] as Map<String, String>);
   }
 }

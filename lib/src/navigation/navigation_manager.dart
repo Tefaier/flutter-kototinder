@@ -19,8 +19,8 @@ class NavigationManager {
     var changedHistory = await _navigator.pushNamed(
       RouteNames.likes,
       arguments: history,
-    ) as List<LikeInteraction>;
-    return changedHistory;
+    ) as List<LikeInteraction>?;
+    return changedHistory ?? history;
   }
 
   void pop([Object? result]) {

@@ -18,7 +18,7 @@ class BottomNavigationHolder extends StatelessWidget {
         child: Padding(
             padding: const EdgeInsetsDirectional.symmetric(horizontal: 5),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: children.length > 1 ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
               children: children,
             )));
   }
