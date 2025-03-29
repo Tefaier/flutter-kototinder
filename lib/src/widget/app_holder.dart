@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hw_lototinder/src/utils/logger.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import '/src/navigation/routes.dart';
@@ -34,7 +33,6 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    logger.info("App holder init");
     getIt.registerSingletonIfAbsent<ThemeSwap>(() => ThemeSwap(themeSwap));
   }
 

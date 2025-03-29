@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
+import 'package:get_it/get_it.dart';
+
+GetIt getIt = GetIt.instance();
 
 class LoadableImage extends StatelessWidget {
   final String url;
@@ -22,11 +26,16 @@ class LoadableImage extends StatelessWidget {
         ),
       );
     }, frameBuilder: (_, child, frame, ___) {
-      return AnimatedOpacity(
-        duration: const Duration(milliseconds: 200),
-        opacity: frame != null ? 1.0 : 0,
-        child: frame != null ? child : Container(),
-      );
-    });
+      return TweenAnimationBuilder(
+          tween: Tween<double>(begin: 0.0, end: 1.0),
+          duration: const Duration(milliseconds: 200),
+          builder: (BuildContext context, double opacity, Widget? child) {
+            return Opacity(opacity: opacity, child: child);
+          },
+          child: child);
+    }, errorBuilder: (context, error, stackTrace) {
+      getIt<NavigationManager>().showAlert("Internet error", "Failed to load image by url $url}");
+      throw error;
+    },);
   }
 }

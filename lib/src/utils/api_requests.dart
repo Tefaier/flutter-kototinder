@@ -15,7 +15,10 @@ import 'package:flutter_hw_lototinder/src/model/awailable_apis.dart';
 class ApiRequests {
   ApiRequests._();
 
-  static Future<ImageInfo?> makeRequest(AwailableAPIs api) {
-    return http.get(Uri.parse(api.getRequest)).then((response) => jsonDecode(response.body)).catchError((handleError) => null).then((result) => api.responseParser(result));
+  static Future<ImageInfo?> makeRequest(AwailableAPIs api, void Function()? onError) {
+    return http.get(Uri.parse(api.getRequest)).then((response) => jsonDecode(response.body)).catchError((handleError) {
+      if (onError != null) onError();
+      return null;
+    }).then((result) => api.responseParser(result));
   }
 }

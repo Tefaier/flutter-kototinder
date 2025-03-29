@@ -17,11 +17,12 @@ ImageInfo? thecatapiParser(dynamic info) {
 }
 
 enum AwailableAPIs {
-  cats("thecatapi", "https://api.thecatapi.com/v1/images/search?has_breeds=1&api_key=live_o8038oqDil8T8qkhapTShngvUDx2B8gjkmIIAXFC0m7Js2rsqL6y8GddBEH6vQOf", thecatapiParser);
+  cats("thecatapi", "https://api.thecatapi.com/", "https://api.thecatapi.com/v1/images/search?has_breeds=1&api_key=live_o8038oqDil8T8qkhapTShngvUDx2B8gjkmIIAXFC0m7Js2rsqL6y8GddBEH6vQOf", thecatapiParser);
 
   final String name;
+  final String printName;
   final String getRequest;
   final ImageInfo? Function(dynamic) responseParser;
 
-  const AwailableAPIs(this.name, this.getRequest, this.responseParser);
+  const AwailableAPIs(this.name, this.printName, this.getRequest, this.responseParser);
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hw_lototinder/src/utils/logger.dart';
 
 class InputWithDelete extends StatefulWidget {
   final void Function(String)? onChange;
@@ -16,7 +15,6 @@ class _InputWithDeleteState extends State<InputWithDelete> {
   late TextEditingController textController;
 
   void submitString(String str) {
-    logger.info("String of $str was submitted");
     setState(() {
       currentText = str;
     });
@@ -56,7 +54,7 @@ class _InputWithDeleteState extends State<InputWithDelete> {
               controller: textController,
               onChanged: submitString,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             hintText: currentText == "" ? 'Enter search filter by breed' : null,
           ),
         )),
@@ -64,7 +62,7 @@ class _InputWithDeleteState extends State<InputWithDelete> {
             onPressed: () {
               submitString("");
             },
-            child: const Text(style: TextStyle(fontSize: 25), "Clear"))
+            child: const Text(style: TextStyle(fontSize: 20), "Clear"))
       ],
     );
   }

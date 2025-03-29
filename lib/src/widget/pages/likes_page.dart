@@ -1,8 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_hw_lototinder/src/model/like_interaction.dart';
 import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
 import 'package:flutter_hw_lototinder/src/state/likes_history_notifier.dart';
-import 'package:flutter_hw_lototinder/src/utils/logger.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/bottom_navigation_holder.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/input_with_delete.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/likes_history_list.dart';
@@ -18,19 +18,7 @@ class LikesPage extends StatefulWidget {
 }
 
 class _LikesPageState extends State<LikesPage> {
-  static String _prev_text = "";
-
-  @override
-  void initState() {
-    super.initState();
-    logger.info("Likes page init");
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    logger.info("Likes page dispose");
-  }
+  static String prevText = "";
 
   void popSelf() {
     getIt<NavigationManager>().pop(getIt<LikesHistoryNotifier>().history);
@@ -43,21 +31,29 @@ class _LikesPageState extends State<LikesPage> {
           builder: (context) => Scaffold(
                 appBar: AppBar(
                     automaticallyImplyLeading: false,
-                    title: InputWithDelete(
-                        initText: _prev_text,
-                        onChange: (value) {
-                          LikesHistoryInheritedNotifier.of(context)
-                              .setFilterByBreed(value);
-                          _prev_text = value;
-                        })),
-                body: HistoryList(
-                    content: LikesHistoryInheritedNotifier.of(context)
-                        .getFiltered()),
+                    title: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: InputWithDelete(
+                          initText: prevText,
+                          onChange: (value) {
+                            LikesHistoryInheritedNotifier.of(context)
+                                .setFilterByBreed(value);
+                            prevText = value;
+                          }),
+                    )),
+                body: Center(
+                    child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                            maxWidth: min(
+                                600, MediaQuery.sizeOf(context).width * 0.95)),
+                        child: HistoryList(
+                            content: LikesHistoryInheritedNotifier.of(context)
+                                .getFiltered()))),
                 bottomNavigationBar: BottomNavigationHolder(children: [
                   TextButton(
                       onPressed: popSelf,
                       child: const Text(
-                          style: TextStyle(fontSize: 40, letterSpacing: 3),
+                          style: TextStyle(fontSize: 30, letterSpacing: 5),
                           "CLOSE"))
                 ]),
               )));

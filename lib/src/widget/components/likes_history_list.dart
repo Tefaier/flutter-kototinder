@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hw_lototinder/src/model/like_interaction.dart';
 import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
 import 'package:flutter_hw_lototinder/src/state/likes_history_notifier.dart';
-import 'package:flutter_hw_lototinder/src/utils/logger.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/loadable_image.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 GetIt getIt = GetIt.instance;
 
@@ -15,27 +15,33 @@ class HistoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.info("History rendered");
     if (content.isNotEmpty) {
-      return ListView.separated(
-        itemBuilder: (context, index) => _HistoryItem(
-          index,
-          content[index],
-        ),
-        separatorBuilder: (context, index) => const Divider(
-          height: 1,
-          thickness: 1,
-          indent: 10,
-          endIndent: 10,
-        ),
-        itemCount: content.length,
-      );
+      return Card(
+          color: Theme.of(context).brightness == Brightness.light
+              ? const Color.fromARGB(255, 240, 240, 255)
+              : const Color.fromARGB(255, 10, 10, 15),
+          child: ListView.separated(
+            cacheExtent: 500,
+            itemBuilder: (context, index) => _HistoryItem(
+              index + 1,
+              content[index],
+            ),
+            separatorBuilder: (context, index) => const Divider(
+              height: 1,
+              thickness: 1,
+              indent: 10,
+              endIndent: 10,
+            ),
+            itemCount: content.length,
+          ));
     }
-    return const Center(child: Text(style: TextStyle(fontSize: 25), "No entries to display"));
+    return const Center(
+        child: Text(style: TextStyle(fontSize: 25), "No entries to display"));
   }
 }
 
 class _HistoryItem extends StatelessWidget {
+  static DateFormat formatter = DateFormat('MM-dd H:m');
   final int index;
   final LikeInteraction interaction;
 
@@ -54,26 +60,42 @@ class _HistoryItem extends StatelessWidget {
         : const ImageIcon(AssetImage("assets/icons/dislike.png"),
             size: 25, color: Color.fromARGB(255, 0, 81, 255));
 
-    return SizedBox(
-        height: 50,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(index.toString()),
-            OutlinedButton(
-                style:
-                    OutlinedButton.styleFrom(side: const BorderSide(width: 3)),
-                onPressed: () => getIt<NavigationManager>()
-                    .openDetails(interaction.imageInfo),
-                child: LoadableImage(
-                    url: interaction.imageInfo.url, fit: BoxFit.fitHeight)),
-            likeOrDislike,
-            Text(interaction.actionTime.toString()),
-            const Spacer(),
-            TextButton(
-                onPressed: () => deleteSelf(context),
-                child: const Text("Delete"))
-          ],
-        ));
+    return ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 50, maxHeight: 50),
+        child: Padding(
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              spacing: 2,
+              children: [
+                Text(style: const TextStyle(fontSize: 20), index.toString()),
+                IconButton.filled(
+                    style: IconButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        minimumSize: const Size.fromWidth(80),
+                        maximumSize: const Size.fromWidth(80),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(2))),
+                        backgroundColor: Colors.transparent,
+                        hoverColor:
+                            Theme.of(context).brightness == Brightness.light
+                                ? const Color.fromARGB(10, 0, 0, 0)
+                                : const Color.fromARGB(10, 255, 255, 255)),
+                    onPressed: () => getIt<NavigationManager>()
+                        .openDetails(interaction.imageInfo),
+                    icon: LoadableImage(
+                        url: interaction.imageInfo.url, fit: BoxFit.fitHeight)),
+                likeOrDislike,
+                Expanded(
+                    child: Text(
+                  formatter.format(interaction.actionTime),
+                  overflow: TextOverflow.fade,
+                )),
+                TextButton(
+                    onPressed: () => deleteSelf(context),
+                    child: const Text("Delete"))
+              ],
+            )));
   }
 }

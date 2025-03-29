@@ -15,7 +15,24 @@ class NavigationManager {
     );
   }
 
-  Future<List<LikeInteraction>> openLikeHistory(List<LikeInteraction> history) async {
+  void showAlert(String alertTitle, String alertMessage) {
+    // decided to ignore that multiple alerts can be stacked
+    // otherwise it can be tracked using static variable here
+    showDialog(
+        context: key.currentContext!,
+        builder: (BuildContext context) => AlertDialog(
+              title: Text(alertTitle),
+              content: Text(alertMessage),
+              actions: [
+                TextButton(
+                    onPressed: () => _navigator.pop(),
+                    child: const Text("Close"))
+              ],
+            ));
+  }
+
+  Future<List<LikeInteraction>> openLikeHistory(
+      List<LikeInteraction> history) async {
     var changedHistory = await _navigator.pushNamed(
       RouteNames.likes,
       arguments: history,
