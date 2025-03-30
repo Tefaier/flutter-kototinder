@@ -41,7 +41,7 @@ class HistoryList extends StatelessWidget {
 }
 
 class _HistoryItem extends StatelessWidget {
-  static DateFormat formatter = DateFormat('MM-dd H:m');
+  static DateFormat formatter = DateFormat('MM-dd HH:mm');
   final int index;
   final LikeInteraction interaction;
 
@@ -69,7 +69,14 @@ class _HistoryItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               spacing: 2,
               children: [
-                Text(style: const TextStyle(fontSize: 20), index.toString()),
+                SizedBox(
+                    width: 20,
+                    child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          index.toString(),
+                          style: const TextStyle(fontSize: 20),
+                        ))),
                 IconButton.filled(
                     style: IconButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 5),
@@ -87,6 +94,16 @@ class _HistoryItem extends StatelessWidget {
                     icon: LoadableImage(
                         url: interaction.imageInfo.url, fit: BoxFit.fitHeight)),
                 likeOrDislike,
+                ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 100),
+                    child: Padding(
+                        padding: const EdgeInsetsDirectional.symmetric(
+                            horizontal: 5),
+                        child: Text(
+                          interaction.imageInfo.imageName,
+                          overflow: TextOverflow.fade,
+                          softWrap: false,
+                        ))),
                 Expanded(
                     child: Text(
                   formatter.format(interaction.actionTime),
