@@ -19,6 +19,8 @@ class LikesPage extends StatefulWidget {
 
 class _LikesPageState extends State<LikesPage> {
   static String prevText = "";
+  static bool prevShowLiked = true;
+  static bool prevShowDisliked = true;
 
   void popSelf() {
     getIt<NavigationManager>().pop(getIt<LikesHistoryNotifier>().history);
@@ -50,11 +52,33 @@ class _LikesPageState extends State<LikesPage> {
                             content: LikesHistoryInheritedNotifier.of(context)
                                 .getFiltered()))),
                 bottomNavigationBar: BottomNavigationHolder(children: [
+                  IconButton(
+                      onPressed: () {
+                        prevShowDisliked = !prevShowDisliked;
+                        LikesHistoryInheritedNotifier.of(context)
+                            .setShowDisliked(prevShowDisliked);
+                      },
+                      icon: ImageIcon(const AssetImage("assets/icons/dislike.png"),
+                          size: 25,
+                          color: prevShowDisliked
+                              ? const Color.fromARGB(255, 0, 81, 255)
+                              : Colors.grey)),
                   TextButton(
                       onPressed: popSelf,
                       child: const Text(
                           style: TextStyle(fontSize: 30, letterSpacing: 5),
-                          "CLOSE"))
+                          "CLOSE")),
+                  IconButton(
+                      onPressed: () {
+                        prevShowLiked = !prevShowLiked;
+                        LikesHistoryInheritedNotifier.of(context)
+                            .setShowLiked(prevShowLiked);
+                      },
+                      icon: ImageIcon(const AssetImage("assets/icons/like.png"),
+                          size: 25,
+                          color: prevShowLiked
+                              ? const Color.fromARGB(255, 255, 60, 0)
+                              : Colors.grey)),
                 ]),
               )));
 }

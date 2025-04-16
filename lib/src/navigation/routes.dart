@@ -34,7 +34,7 @@ abstract class RoutesBuilder {
         );
       case RouteNames.likes:
         getIt<LikesHistoryNotifier>().setHistory(settings.arguments as List<LikeInteraction>);
-        getIt<LikesHistoryNotifier>().setFilter((_) => true);
+        // getIt<LikesHistoryNotifier>().setFilter((_) => true);
         return MaterialPageRoute(
           builder: (_) => const LikesPage(),
           settings: settings,

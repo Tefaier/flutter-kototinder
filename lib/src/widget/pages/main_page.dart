@@ -43,7 +43,8 @@ class _MainPageState extends State<MainPageContent> {
   AwailableAPIs chosenAPI = AwailableAPIs.cats;
 
   void loadError(AwailableAPIs api) {
-    getIt<NavigationManager>().showAlert("Internet error", "Failed to load image from api ${api.printName}");
+    getIt<NavigationManager>().showAlert(
+        "Internet error", "Failed to load image from api ${api.printName}");
   }
 
   void likingAction(bool isLike) {
@@ -61,7 +62,8 @@ class _MainPageState extends State<MainPageContent> {
   }
 
   void loadNew() {
-    getIt<ImagesLoader>().loadImages(1, chosenAPI, _notifier!.addLoadedInfo, () => loadError(chosenAPI));
+    getIt<ImagesLoader>().loadImages(
+        1, chosenAPI, _notifier!.addLoadedInfo, () => loadError(chosenAPI));
   }
 
   void showDetails() {
@@ -76,7 +78,8 @@ class _MainPageState extends State<MainPageContent> {
         ImagesLoader.keepLoadedSetting,
         () => (_notifier!.value.loadedImages[api]?.length ?? 0),
         api,
-        _notifier!.addLoadedInfo, () => loadError(api));
+        _notifier!.addLoadedInfo,
+        () => loadError(api));
     setState(() {
       shownImage = _notifier!.value.loadedImages[api]?.firstOrNull;
       cachedImages = [];
@@ -101,7 +104,8 @@ class _MainPageState extends State<MainPageContent> {
         widget.cardsToHold,
         () => (_notifier!.value.loadedImages[chosenAPI]?.length ?? 0),
         chosenAPI,
-        _notifier!.addLoadedInfo, () => loadError(chosenAPI));
+        _notifier!.addLoadedInfo,
+        () => loadError(chosenAPI));
     shownImage ??= _notifier!.value.loadedImages[chosenAPI]?.firstOrNull;
     cachedImages = (_notifier!.value.loadedImages[chosenAPI] ?? [])
         .map((info) => Image.network(info.url,
@@ -124,7 +128,7 @@ class _MainPageState extends State<MainPageContent> {
             mainAxisAlignment: MainAxisAlignment.start,
             spacing: 10,
             children: [
-              IconBurronCounter(
+              IconButtonCounter(
                 icon: const ImageIcon(AssetImage("assets/icons/dislike.png"),
                     size: 25, color: Color.fromARGB(255, 0, 81, 255)),
                 number: _notifier!.countOfDisliked(),
@@ -134,7 +138,7 @@ class _MainPageState extends State<MainPageContent> {
                   destroyShown();
                 },
               ),
-              IconBurronCounter(
+              IconButtonCounter(
                 icon: const ImageIcon(AssetImage("assets/icons/like.png"),
                     size: 25, color: Color.fromARGB(255, 255, 60, 0)),
                 number: _notifier!.countOfLiked(),

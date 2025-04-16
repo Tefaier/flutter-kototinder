@@ -12,6 +12,11 @@ ImageInfo? thecatapiParser(dynamic info) {
   var extra = <String, String>{};
   extra["general"] = breedsInfo[0]["temperament"];
   extra["description"] = breedsInfo[0]["description"];
+  extra["origin"] = breedsInfo[0]["origin"];
+  extra["lifespan"] = breedsInfo[0]["life_span"];
+  extra["adaptability"] = breedsInfo[0]["adaptability"].toString();
+  extra["affection_level"] = breedsInfo[0]["affection_level"].toString();
+  extra["intelligence"] = breedsInfo[0]["intelligence"].toString();
   parsed["extra"] = extra;
   return ImageInfo.fromJson(parsed);
 }

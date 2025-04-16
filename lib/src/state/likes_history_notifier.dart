@@ -5,7 +5,10 @@ import 'package:flutter_hw_lototinder/src/model/like_interaction.dart';
 
 class LikesHistoryNotifier extends ChangeNotifier {
   List<LikeInteraction> history;
-  bool Function(LikeInteraction)? currentFilter;
+  bool Function(LikeInteraction)? filter;
+  bool Function(LikeInteraction)? finalFilter;
+  bool showLiked = true;
+  bool showDisliked = true;
 
   LikesHistoryNotifier({required this.history});
 
@@ -15,12 +18,14 @@ class LikesHistoryNotifier extends ChangeNotifier {
   }
 
   void setFilter(bool Function(LikeInteraction) filter) {
-    currentFilter = filter;
+    filter = filter;
     notifyListeners();
   }
 
   void setFilterByBreed(String breedText) {
-    setFilter((interaction) => interaction.imageInfo.imageName.toLowerCase().contains(breedText.toLowerCase()));
+    setFilter((interaction) => interaction.imageInfo.imageName
+        .toLowerCase()
+        .contains(breedText.toLowerCase()));
   }
 
   void removeInteraction(LikeInteraction interaction) {
@@ -28,13 +33,31 @@ class LikesHistoryNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setShowLiked(bool value) {
+    if (showLiked == value) return;
+    showLiked = value;
+    notifyListeners();
+  }
+
+  void setShowDisliked(bool value) {
+    if (showDisliked == value) return;
+    showDisliked = value;
+    notifyListeners();
+  }
+
   List<LikeInteraction> getFiltered() {
-    if (currentFilter == null) return history;
-    return history.where(currentFilter!).toList();
+    if (filter == null && showLiked && showDisliked) return history;
+    return history
+        .where((interaction) =>
+            ((showLiked && interaction.isLike) ||
+                (showDisliked && !interaction.isLike)) &&
+            (filter == null || filter!(interaction)))
+        .toList();
   }
 }
 
-class LikesHistoryInheritedNotifier extends InheritedNotifier<LikesHistoryNotifier> {
+class LikesHistoryInheritedNotifier
+    extends InheritedNotifier<LikesHistoryNotifier> {
   const LikesHistoryInheritedNotifier({
     super.key,
     required super.notifier,
@@ -42,8 +65,8 @@ class LikesHistoryInheritedNotifier extends InheritedNotifier<LikesHistoryNotifi
   });
 
   static LikesHistoryNotifier of(BuildContext context) {
-    final result =
-        context.dependOnInheritedWidgetOfExactType<LikesHistoryInheritedNotifier>();
+    final result = context
+        .dependOnInheritedWidgetOfExactType<LikesHistoryInheritedNotifier>();
 
     final notifier = result?.notifier;
     if (notifier == null) {
