@@ -6,17 +6,18 @@ import 'package:flutter_hw_lototinder/src/domain/model/like_interaction.dart';
 
 class LikesHistoryNotifier extends ChangeNotifier {
   LikesHistoryDao dao;
+  List<LikeInteraction> localHistory = [];
   bool Function(LikeInteraction)? filter;
   bool Function(LikeInteraction)? finalFilter;
   bool showLiked = true;
   bool showDisliked = true;
 
-  LikesHistoryNotifier({required this.dao});
+  LikesHistoryNotifier({required this.dao}) {
+    synchWithRepository();
+  }
 
-  void setHistory(List<LikeInteraction> value) async {
-    for (var val in value) {
-      await dao.saveItem(val);
-    }
+  void synchWithRepository() async {
+    localHistory = await dao.loadItems();
     notifyListeners();
   }
 
@@ -32,8 +33,9 @@ class LikesHistoryNotifier extends ChangeNotifier {
   }
 
   void removeInteraction(LikeInteraction interaction) async {
-    await dao.deleteItem(interaction.id);
+    localHistory = localHistory.where((item) => item.id != interaction.id).toList();
     notifyListeners();
+    await dao.deleteItem(interaction.id);
   }
 
   void setShowLiked(bool value) {
@@ -48,10 +50,9 @@ class LikesHistoryNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<LikeInteraction>> getFiltered() async {
-    var items = await dao.loadItems();
-    if (filter == null && showLiked && showDisliked) return items;
-    return items
+  List<LikeInteraction> getFiltered() {
+    if (filter == null && showLiked && showDisliked) return localHistory;
+    return localHistory
         .where((interaction) =>
             ((showLiked && interaction.isLike) ||
                 (showDisliked && !interaction.isLike)) &&

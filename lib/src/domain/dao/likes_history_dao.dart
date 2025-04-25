@@ -4,8 +4,6 @@ abstract class LikesHistoryDao {
   /// Загрузить все сохранённые элементы.
   Future<List<LikeInteraction>> loadItems();
 
-  Future<int> getLikeCount(bool isLike);
-
   /// Сохранить (добавить) элемент.
   Future<void> saveItem(LikeInteraction item);
 

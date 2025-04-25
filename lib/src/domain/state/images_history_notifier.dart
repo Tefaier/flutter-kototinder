@@ -10,7 +10,14 @@ import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart' as image
 class ImagesNotifier extends ChangeNotifier {
   AppState value;
 
-  ImagesNotifier({required this.value});
+  ImagesNotifier({required this.value}) {
+    synchWithRepository();
+  }
+
+  void synchWithRepository() async {
+    value.localHistory = await value.dao.loadItems();
+    notifyListeners();
+  }
 
   void addLike(image_info.ImageInfo info) {
     addInteractionEntry(info, true);
@@ -21,13 +28,18 @@ class ImagesNotifier extends ChangeNotifier {
   }
 
   void addInteractionEntry(image_info.ImageInfo info, bool isLike) async {
-    await value.dao.saveItem(LikeInteraction(imageInfo: info, actionTime: DateTime.now(), isLike: isLike));
+    var interaction = LikeInteraction(imageInfo: info, actionTime: DateTime.now(), isLike: isLike);
+    value.localHistory.add(interaction);
     notifyListeners();
+
+    await value.dao.saveItem(LikeInteraction(imageInfo: info, actionTime: DateTime.now(), isLike: isLike));
   }
 
   void removeInteractionEntry(String url) async {
-    await value.dao.deleteItemByUrl(url);
+    value.localHistory = value.localHistory.where((item) => item.imageInfo.url != url).toList();
     notifyListeners();
+
+    await value.dao.deleteItemByUrl(url);
   }
 
   void addLoadedInfo(image_info.ImageInfo info) {
@@ -43,12 +55,12 @@ class ImagesNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<int> countOfLiked() {
-    return value.dao.getLikeCount(true);
+  int countOfLiked() {
+    return value.localHistory.where((item) => item.isLike).toList().length;
   }
 
-  Future<int> countOfDisliked() {
-    return value.dao.getLikeCount(false);
+  int countOfDisliked() {
+    return value.localHistory.where((item) => !item.isLike).toList().length;
   }
 
   image_info.ImageInfo? getTopLoaded(AwailableAPIs api) {

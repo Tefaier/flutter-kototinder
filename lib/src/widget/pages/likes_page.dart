@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hw_lototinder/src/domain/state/images_history_notifier.dart';
 import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
 import 'package:flutter_hw_lototinder/src/domain/state/likes_history_notifier.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/bottom_navigation_holder.dart';
@@ -23,6 +24,7 @@ class _LikesPageState extends State<LikesPage> {
   static bool prevShowDisliked = true;
 
   void popSelf() {
+    getIt<ImagesNotifier>().synchWithRepository();
     getIt<NavigationManager>().pop();
   }
 
@@ -48,12 +50,7 @@ class _LikesPageState extends State<LikesPage> {
                         constraints: BoxConstraints(
                             maxWidth: min(
                                 600, MediaQuery.sizeOf(context).width * 0.95)),
-                        child: FutureBuilder(
-                            future: LikesHistoryInheritedNotifier.of(context)
-                                .getFiltered(),
-                            builder: (context, value) => value.hasData
-                                ? HistoryList(content: value.data!)
-                                : const CircularProgressIndicator()))),
+                        child: HistoryList(content: LikesHistoryInheritedNotifier.of(context).getFiltered()))),
                 bottomNavigationBar: BottomNavigationHolder(children: [
                   IconButton(
                       onPressed: () {

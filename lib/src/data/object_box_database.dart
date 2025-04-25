@@ -67,13 +67,4 @@ class LikesHistoryObjectBoxDataBase implements LikesHistoryDao {
 
   @override
   Future<void> dispose() async => _store.close();
-  
-  @override
-  Future<int> getLikeCount(bool isLike) {
-    final box = _store.box<LikesHistoryItemEntity>();
-    final query = box.query(LikesHistoryItemEntity_.isLike.equals(isLike)).build();
-    final counter = query.count();
-    query.close();
-    return Future<int>.value(counter);
-  }
 }

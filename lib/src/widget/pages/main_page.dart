@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hw_lototinder/src/domain/model/awailable_apis.dart';
 import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart'
     as image_info;
+import 'package:flutter_hw_lototinder/src/domain/state/likes_history_notifier.dart';
 import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
 import 'package:flutter_hw_lototinder/src/domain/state/images_history_notifier.dart';
 import 'package:flutter_hw_lototinder/src/domain/state/images_loader.dart';
@@ -87,6 +88,7 @@ class _MainPageState extends State<MainPageContent> {
   }
 
   void showLikesPage() {
+    getIt<LikesHistoryNotifier>().synchWithRepository();
     getIt<NavigationManager>().openLikeHistory();
   }
 
@@ -118,34 +120,26 @@ class _MainPageState extends State<MainPageContent> {
             mainAxisAlignment: MainAxisAlignment.start,
             spacing: 10,
             children: [
-              FutureBuilder(
-                  future: _notifier!.countOfDisliked(),
-                  builder: (context, value) => IconButtonCounter(
-                        icon: const ImageIcon(
-                            AssetImage("assets/icons/dislike.png"),
-                            size: 25,
-                            color: Color.fromARGB(255, 0, 81, 255)),
-                        number: value.data ?? 0,
-                        onClick: () {
-                          loadNew();
-                          likingAction(false);
-                          destroyShown();
-                        },
-                      )),
-              FutureBuilder(
-                  future: _notifier!.countOfLiked(),
-                  builder: (context, value) => IconButtonCounter(
-                        icon: const ImageIcon(
-                            AssetImage("assets/icons/like.png"),
-                            size: 25,
-                            color: Color.fromARGB(255, 255, 60, 0)),
-                        number: value.data ?? 0,
-                        onClick: () {
-                          loadNew();
-                          likingAction(true);
-                          destroyShown();
-                        },
-                      )),
+              IconButtonCounter(
+                icon: const ImageIcon(AssetImage("assets/icons/dislike.png"),
+                    size: 25, color: Color.fromARGB(255, 0, 81, 255)),
+                number: _notifier!.countOfDisliked(),
+                onClick: () {
+                  loadNew();
+                  likingAction(false);
+                  destroyShown();
+                },
+              ),
+              IconButtonCounter(
+                icon: const ImageIcon(AssetImage("assets/icons/like.png"),
+                    size: 25, color: Color.fromARGB(255, 255, 60, 0)),
+                number: _notifier!.countOfLiked(),
+                onClick: () {
+                  loadNew();
+                  likingAction(true);
+                  destroyShown();
+                },
+              ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(elevation: 5),
                 onPressed: showLikesPage,
