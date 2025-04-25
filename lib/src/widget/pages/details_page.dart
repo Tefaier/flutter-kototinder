@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart' as model;
+import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart'
+    as model;
 import 'package:flutter_hw_lototinder/src/widget/components/labeled_progress_bar.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/loadable_image.dart';
 
@@ -29,41 +30,56 @@ class DetailsPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   spacing: 16,
                   children: [
-                    RichText(
-                      text: TextSpan(
-                          style: TextStyle(
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.white
-                                  : Colors.black,
-                              fontSize: 16),
-                          children: [
-                            const TextSpan(
-                                text: "Имя: ",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(text: '${info.imageName}\n'),
-                            const TextSpan(
-                                text: "Просхождение (страна): ",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                                text: '${info.extraInfo?['origin'] ?? ''}\n'),
-                            const TextSpan(
-                                text: "Срок жизни: ",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                                text: '${info.extraInfo?['lifespan'] ?? ''}\n'),
-                            const TextSpan(
-                                text: "Характеристики: ",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                                text: '${info.extraInfo?['general'] ?? ''}\n'),
-                            const TextSpan(
-                                text: "Описание: ",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(text: info.extraInfo?['description'] ?? '')
-                          ]),
-                      softWrap: true,
-                    ),
+                    ConstrainedBox(
+                        constraints: BoxConstraints(
+                            maxHeight: MediaQuery.sizeOf(context).height * 0.5),
+                        child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: RichText(
+                              text: TextSpan(
+                                  style: TextStyle(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 16),
+                                  children: [
+                                    const TextSpan(
+                                        text: "Имя: ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(text: '${info.imageName}\n'),
+                                    const TextSpan(
+                                        text: "Просхождение (страна): ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '${info.extraInfo?['origin'] ?? ''}\n'),
+                                    const TextSpan(
+                                        text: "Срок жизни: ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '${info.extraInfo?['lifespan'] ?? ''}\n'),
+                                    const TextSpan(
+                                        text: "Характеристики: ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '${info.extraInfo?['general'] ?? ''}\n'),
+                                    const TextSpan(
+                                        text: "Описание: ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text: info.extraInfo?['description'] ??
+                                            '')
+                                  ]),
+                              softWrap: true,
+                            ))),
                     info.extraInfo?['adaptability'] != null
                         ? ProgressbarWithText(
                             text: "Адаптивность",
