@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_hw_lototinder/src/domain/model/app_state.dart';
 import 'package:flutter_hw_lototinder/src/domain/model/awailable_apis.dart';
 import 'package:flutter_hw_lototinder/src/domain/model/like_interaction.dart';
@@ -32,6 +33,7 @@ class ImagesNotifier extends ChangeNotifier {
   void addLoadedInfo(image_info.ImageInfo info) {
     value.loadedImages.putIfAbsent(info.apiSource, () => <image_info.ImageInfo>[]);
     value.loadedImages[info.apiSource]!.add(info);
+    DefaultCacheManager().downloadFile(info.url);
     notifyListeners();
   }
 

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import './routes.dart';
 import "package:flutter_hw_lototinder/src/domain/model/image_info.dart"
     as image_info;
+import 'package:flutter_hw_lototinder/src/navigation/routes.dart';
 
 class NavigationManager {
   final key = GlobalKey<NavigatorState>();
+  bool dialogOpened = false;
 
   NavigatorState get _navigator => key.currentState!;
 
@@ -18,15 +19,18 @@ class NavigationManager {
   void showSnackBar(String text) {
     final snackBar = SnackBar(
       content: Text(text),
-      action: SnackBarAction(label: 'Close', onPressed: (){}),
+      action: SnackBarAction(label: 'Close', onPressed: () {}),
     );
 
     ScaffoldMessenger.of(key.currentContext!).showSnackBar(snackBar);
   }
 
   void showAlert(String alertTitle, String alertMessage) {
-    // decided to ignore that multiple alerts can be stacked
-    // otherwise it can be tracked using static variable here
+    // decided to ignore repeated dialogs
+    if (dialogOpened) {
+      return;
+    }
+    dialogOpened = true;
     showDialog(
         context: key.currentContext!,
         builder: (BuildContext context) => AlertDialog(
@@ -34,7 +38,10 @@ class NavigationManager {
               content: Text(alertMessage),
               actions: [
                 TextButton(
-                    onPressed: () => _navigator.pop(),
+                    onPressed: () {
+                      dialogOpened = false;
+                      _navigator.pop();
+                    },
                     child: const Text("Close"))
               ],
             ));

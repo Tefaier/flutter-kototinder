@@ -40,7 +40,6 @@ class MainPageContent extends StatefulWidget {
 class _MainPageState extends State<MainPageContent> {
   ImagesNotifier? _notifier;
   image_info.ImageInfo? shownImage;
-  List<Widget> cachedImages = [];
   AwailableAPIs chosenAPI = AwailableAPIs.cats;
 
   void loadError(AwailableAPIs api) {
@@ -83,7 +82,6 @@ class _MainPageState extends State<MainPageContent> {
         () => loadError(api));
     setState(() {
       shownImage = _notifier!.value.loadedImages[api]?.firstOrNull;
-      cachedImages = [];
       chosenAPI = api;
     });
   }
@@ -103,10 +101,6 @@ class _MainPageState extends State<MainPageContent> {
         _notifier!.addLoadedInfo,
         () => loadError(chosenAPI));
     shownImage ??= _notifier!.value.loadedImages[chosenAPI]?.firstOrNull;
-    cachedImages = (_notifier!.value.loadedImages[chosenAPI] ?? [])
-        .map((info) => Image.network(info.url,
-            key: ObjectKey(info.url), color: Colors.transparent))
-        .toList();
   }
 
   @override
@@ -187,7 +181,6 @@ class _MainPageState extends State<MainPageContent> {
           ),
         ]),
         body: Stack(children: [
-          ...cachedImages,
           const Align(
             alignment: Alignment.topLeft,
             child: LogoIcon(),
