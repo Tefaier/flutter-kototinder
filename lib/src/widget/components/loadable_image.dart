@@ -13,32 +13,34 @@ class LoadableImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: url,
-      fit: fit,
-      progressIndicatorBuilder: (context, url, loadingProgress) {
-        return Center(
-          child: CircularProgressIndicator(
-            value: loadingProgress.progress,
-          ),
-        );
-      },
-      imageBuilder: (context, imageProvider) {
-        return TweenAnimationBuilder(
-            tween: Tween<double>(begin: 0.0, end: 1.0),
-            duration: const Duration(milliseconds: 200),
-            builder: (BuildContext context, double opacity, Widget? child) {
-              return Opacity(opacity: opacity, child: child);
-            },
-            child: Image(
-              image: imageProvider,
-            ));
-      },
-      errorWidget: (context, url, error) {
-        getIt<NavigationManager>()
-            .showAlert("Internet error", "Failed to load image by url $url}");
-        return const Icon(Icons.error);
-      },
-    );
+    return Hero(
+        tag: url,
+        child: CachedNetworkImage(
+          imageUrl: url,
+          fit: fit,
+          progressIndicatorBuilder: (context, url, loadingProgress) {
+            return Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.progress,
+              ),
+            );
+          },
+          imageBuilder: (context, imageProvider) {
+            return TweenAnimationBuilder(
+                tween: Tween<double>(begin: 0.0, end: 1.0),
+                duration: const Duration(milliseconds: 200),
+                builder: (BuildContext context, double opacity, Widget? child) {
+                  return Opacity(opacity: opacity, child: child);
+                },
+                child: Image(
+                  image: imageProvider,
+                ));
+          },
+          errorWidget: (context, url, error) {
+            getIt<NavigationManager>().showAlert(
+                "Internet error", "Failed to load image by url $url}");
+            return const Icon(Icons.error);
+          },
+        ));
   }
 }
