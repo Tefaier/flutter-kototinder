@@ -23,7 +23,7 @@ class _LikesPageState extends State<LikesPage> {
   static bool prevShowDisliked = true;
 
   void popSelf() {
-    getIt<NavigationManager>().pop(getIt<LikesHistoryNotifier>().history);
+    getIt<NavigationManager>().pop();
   }
 
   @override
@@ -48,9 +48,12 @@ class _LikesPageState extends State<LikesPage> {
                         constraints: BoxConstraints(
                             maxWidth: min(
                                 600, MediaQuery.sizeOf(context).width * 0.95)),
-                        child: HistoryList(
-                            content: LikesHistoryInheritedNotifier.of(context)
-                                .getFiltered()))),
+                        child: FutureBuilder(
+                            future: LikesHistoryInheritedNotifier.of(context)
+                                .getFiltered(),
+                            builder: (context, value) => value.hasData
+                                ? HistoryList(content: value.data!)
+                                : const CircularProgressIndicator()))),
                 bottomNavigationBar: BottomNavigationHolder(children: [
                   IconButton(
                       onPressed: () {
@@ -58,7 +61,8 @@ class _LikesPageState extends State<LikesPage> {
                         LikesHistoryInheritedNotifier.of(context)
                             .setShowDisliked(prevShowDisliked);
                       },
-                      icon: ImageIcon(const AssetImage("assets/icons/dislike.png"),
+                      icon: ImageIcon(
+                          const AssetImage("assets/icons/dislike.png"),
                           size: 25,
                           color: prevShowDisliked
                               ? const Color.fromARGB(255, 0, 81, 255)

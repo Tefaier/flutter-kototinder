@@ -15,6 +15,15 @@ class NavigationManager {
     );
   }
 
+  void showSnackBar(String text) {
+    final snackBar = SnackBar(
+      content: Text(text),
+      action: SnackBarAction(label: 'Close', onPressed: (){}),
+    );
+
+    ScaffoldMessenger.of(key.currentContext!).showSnackBar(snackBar);
+  }
+
   void showAlert(String alertTitle, String alertMessage) {
     // decided to ignore that multiple alerts can be stacked
     // otherwise it can be tracked using static variable here

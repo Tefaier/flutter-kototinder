@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -22,6 +25,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  late final StreamSubscription<List<ConnectivityResult>> subscription;
+  bool noConnection = false;
   bool isDark = false;
 
   void themeSwap() {
@@ -34,6 +39,19 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     getIt.registerSingletonIfAbsent<ThemeSwap>(() => ThemeSwap(themeSwap));
+    subscription = Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
+      var newNoConnection = result.contains(ConnectivityResult.none);
+      if (newNoConnection != noConnection) {
+        noConnection = newNoConnection;
+        getIt<NavigationManager>().showSnackBar(newNoConnection ? "No internet connection" : "Internet connection detected");
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
   }
 
   @override
