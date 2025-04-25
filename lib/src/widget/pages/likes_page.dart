@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
-import 'package:flutter_hw_lototinder/src/state/likes_history_notifier.dart';
+import 'package:flutter_hw_lototinder/src/domain/state/likes_history_notifier.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/bottom_navigation_holder.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/input_with_delete.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/likes_history_list.dart';

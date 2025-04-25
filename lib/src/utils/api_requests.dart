@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:flutter_hw_lototinder/src/model/image_info.dart';
-import 'package:flutter_hw_lototinder/src/model/awailable_apis.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/awailable_apis.dart';
 
 // propable api
 // https://api.nekosapi.com/v4/images/random?tags=boy&without_tags=girl&rating=safe

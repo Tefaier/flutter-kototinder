@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_hw_lototinder/src/model/app_state.dart';
-import 'package:flutter_hw_lototinder/src/model/awailable_apis.dart';
-import 'package:flutter_hw_lototinder/src/model/like_interaction.dart';
-import 'package:flutter_hw_lototinder/src/model/image_info.dart' as image_info;
+import 'package:flutter_hw_lototinder/src/domain/model/app_state.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/awailable_apis.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/like_interaction.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart' as image_info;
 
 class ImagesNotifier extends ChangeNotifier {
   AppState value;
@@ -19,13 +19,13 @@ class ImagesNotifier extends ChangeNotifier {
     addInteractionEntry(info, false);
   }
 
-  void addInteractionEntry(image_info.ImageInfo info, bool isLike) {
-    value.likesHistory.add(LikeInteraction(imageInfo: info, actionTime: DateTime.now(), isLike: isLike));
+  void addInteractionEntry(image_info.ImageInfo info, bool isLike) async {
+    await value.dao.saveItem(LikeInteraction(imageInfo: info, actionTime: DateTime.now(), isLike: isLike));
     notifyListeners();
   }
 
-  void removeInteractionEntry(String url) {
-    value.likesHistory.removeWhere((item) => item.imageInfo.url == url);
+  void removeInteractionEntry(String url) async {
+    await value.dao.deleteItemByUrl(url);
     notifyListeners();
   }
 
@@ -41,12 +41,12 @@ class ImagesNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  int countOfLiked() {
-    return value.likesHistory.where((info) => info.isLike).length;
+  Future<int> countOfLiked() {
+    return value.dao.getLikeCount(true);
   }
 
-  int countOfDisliked() {
-    return value.likesHistory.where((info) => !info.isLike).length;
+  Future<int> countOfDisliked() {
+    return value.dao.getLikeCount(false);
   }
 
   image_info.ImageInfo? getTopLoaded(AwailableAPIs api) {

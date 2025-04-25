@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_hw_lototinder/src/model/image_info.dart' as model;
+import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart' as model;
 import 'package:flutter_hw_lototinder/src/widget/components/labeled_progress_bar.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/loadable_image.dart';
 

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hw_lototinder/src/model/image_info.dart' as image_info;
-import 'package:flutter_hw_lototinder/src/model/like_interaction.dart';
-import 'package:flutter_hw_lototinder/src/state/likes_history_notifier.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart' as image_info;
 import 'package:flutter_hw_lototinder/src/widget/app_holder.dart';
 import 'package:get_it/get_it.dart';
 
@@ -33,8 +31,6 @@ abstract class RoutesBuilder {
           settings: settings,
         );
       case RouteNames.likes:
-        getIt<LikesHistoryNotifier>().setHistory(settings.arguments as List<LikeInteraction>);
-        // getIt<LikesHistoryNotifier>().setFilter((_) => true);
         return MaterialPageRoute(
           builder: (_) => const LikesPage(),
           settings: settings,

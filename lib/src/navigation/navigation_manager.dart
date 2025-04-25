@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hw_lototinder/src/model/like_interaction.dart';
 import './routes.dart';
-import "package:flutter_hw_lototinder/src/model/image_info.dart" as image_info;
+import "package:flutter_hw_lototinder/src/domain/model/image_info.dart"
+    as image_info;
 
 class NavigationManager {
   final key = GlobalKey<NavigatorState>();
@@ -31,13 +31,10 @@ class NavigationManager {
             ));
   }
 
-  Future<List<LikeInteraction>> openLikeHistory(
-      List<LikeInteraction> history) async {
-    var changedHistory = await _navigator.pushNamed(
+  Future<void> openLikeHistory() async {
+    _navigator.pushNamed(
       RouteNames.likes,
-      arguments: history,
-    ) as List<LikeInteraction>?;
-    return changedHistory ?? history;
+    );
   }
 
   void pop([Object? result]) {

@@ -1,19 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_hw_lototinder/src/model/like_interaction.dart';
+import 'package:flutter_hw_lototinder/src/domain/dao/likes_history_dao.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/like_interaction.dart';
 
 class LikesHistoryNotifier extends ChangeNotifier {
-  List<LikeInteraction> history;
+  LikesHistoryDao dao;
   bool Function(LikeInteraction)? filter;
   bool Function(LikeInteraction)? finalFilter;
   bool showLiked = true;
   bool showDisliked = true;
 
-  LikesHistoryNotifier({required this.history});
+  LikesHistoryNotifier({required this.dao});
 
-  void setHistory(List<LikeInteraction> value) {
-    history = value;
+  void setHistory(List<LikeInteraction> value) async {
+    for (var val in value) {
+      await dao.saveItem(val);
+    }
     notifyListeners();
   }
 
@@ -28,8 +31,8 @@ class LikesHistoryNotifier extends ChangeNotifier {
         .contains(breedText.toLowerCase()));
   }
 
-  void removeInteraction(LikeInteraction interaction) {
-    history.remove(interaction);
+  void removeInteraction(LikeInteraction interaction) async {
+    await dao.deleteItem(interaction.id);
     notifyListeners();
   }
 
@@ -45,9 +48,10 @@ class LikesHistoryNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<LikeInteraction> getFiltered() {
-    if (filter == null && showLiked && showDisliked) return history;
-    return history
+  Future<List<LikeInteraction>> getFiltered() async {
+    var items = await dao.loadItems();
+    if (filter == null && showLiked && showDisliked) return items;
+    return items
         .where((interaction) =>
             ((showLiked && interaction.isLike) ||
                 (showDisliked && !interaction.isLike)) &&

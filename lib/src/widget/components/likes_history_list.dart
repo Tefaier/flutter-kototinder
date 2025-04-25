@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hw_lototinder/src/model/like_interaction.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/like_interaction.dart';
 import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
-import 'package:flutter_hw_lototinder/src/state/likes_history_notifier.dart';
+import 'package:flutter_hw_lototinder/src/domain/state/likes_history_notifier.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/loadable_image.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';

@@ -1,4 +1,4 @@
-import "package:flutter_hw_lototinder/src/model/image_info.dart";
+import "package:flutter_hw_lototinder/src/domain/model/image_info.dart";
 
 ImageInfo? thecatapiParser(dynamic info) {
   if (info == null) return null;

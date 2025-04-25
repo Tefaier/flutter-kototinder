@@ -1,5 +1,5 @@
-import 'package:flutter_hw_lototinder/src/model/awailable_apis.dart';
-import 'package:flutter_hw_lototinder/src/model/image_info.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/awailable_apis.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart';
 import 'package:flutter_hw_lototinder/src/utils/api_requests.dart';
 
 class ImagesLoader {

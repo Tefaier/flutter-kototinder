@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hw_lototinder/src/model/awailable_apis.dart';
-import 'package:flutter_hw_lototinder/src/model/image_info.dart' as image_info;
+import 'package:flutter_hw_lototinder/src/domain/model/awailable_apis.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart' as image_info;
 import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
-import 'package:flutter_hw_lototinder/src/state/images_history_notifier.dart';
-import 'package:flutter_hw_lototinder/src/state/images_loader.dart';
+import 'package:flutter_hw_lototinder/src/domain/state/images_history_notifier.dart';
+import 'package:flutter_hw_lototinder/src/domain/state/images_loader.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/bottom_navigation_holder.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/logo_icon.dart';
 import 'package:get_it/get_it.dart';
