@@ -18,7 +18,7 @@ void main() {
   final imageInfos = imageUrls.map((e) => ImageInfo(apiSource: AwailableAPIs.cats, url: e, imageName: "cat", extraInfo: {})).toList();
 
   setUpAll(() async {
-    final objectBoxStore = await openStore();
+    final objectBoxStore = await openStore(directory: 'test-db');
     dataBasePath = objectBoxStore.directoryPath;
     dataBase = LikesHistoryObjectBoxDataBase(objectBoxStore);
   });

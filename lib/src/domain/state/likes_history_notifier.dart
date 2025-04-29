@@ -8,7 +8,6 @@ class LikesHistoryNotifier extends ChangeNotifier {
   LikesHistoryDao dao;
   List<LikeInteraction> localHistory = [];
   bool Function(LikeInteraction)? filter;
-  bool Function(LikeInteraction)? finalFilter;
   bool showLiked = true;
   bool showDisliked = true;
 
@@ -16,13 +15,13 @@ class LikesHistoryNotifier extends ChangeNotifier {
     synchWithRepository();
   }
 
-  void synchWithRepository() async {
+  Future<void> synchWithRepository() async {
     localHistory = await dao.loadItems();
     notifyListeners();
   }
 
   void setFilter(bool Function(LikeInteraction) filter) {
-    filter = filter;
+    this.filter = filter;
     notifyListeners();
   }
 

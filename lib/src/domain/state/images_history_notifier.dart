@@ -14,7 +14,7 @@ class ImagesNotifier extends ChangeNotifier {
     synchWithRepository();
   }
 
-  void synchWithRepository() async {
+  Future<void> synchWithRepository() async {
     value.localHistory = await value.dao.loadItems();
     notifyListeners();
   }
@@ -42,10 +42,12 @@ class ImagesNotifier extends ChangeNotifier {
     await value.dao.deleteItemByUrl(url);
   }
 
-  void addLoadedInfo(image_info.ImageInfo info) {
+  Future<void> addLoadedInfo(image_info.ImageInfo info) async {
     value.loadedImages.putIfAbsent(info.apiSource, () => <image_info.ImageInfo>[]);
     value.loadedImages[info.apiSource]!.add(info);
-    DefaultCacheManager().downloadFile(info.url);
+    if (!const bool.fromEnvironment('testing_mode', defaultValue: false)) {
+      await DefaultCacheManager().downloadFile(info.url);
+    }
     notifyListeners();
   }
 

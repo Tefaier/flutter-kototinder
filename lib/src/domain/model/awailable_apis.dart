@@ -21,8 +21,13 @@ ImageInfo? thecatapiParser(dynamic info) {
   return ImageInfo.fromJson(parsed);
 }
 
+ImageInfo? testParser(dynamic info) {
+  return ImageInfo(apiSource: AwailableAPIs.test, url: "", imageName: "");
+}
+
 enum AwailableAPIs {
-  cats("thecatapi", "https://api.thecatapi.com/", "https://api.thecatapi.com/v1/images/search?has_breeds=1&api_key=${const String.fromEnvironment("thecatapi_key")}", thecatapiParser);
+  cats("thecatapi", "https://api.thecatapi.com/", "https://api.thecatapi.com/v1/images/search?has_breeds=1&api_key=${const String.fromEnvironment("thecatapi_key")}", thecatapiParser),
+  test("for tests", "https://google.com/", "https://google.com/", testParser);
 
   final String name;
   final String printName;

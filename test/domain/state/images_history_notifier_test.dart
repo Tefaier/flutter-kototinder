@@ -26,8 +26,11 @@ void main() {
       .toList();
 
   setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
     likesHistoryDao = MockLikesHistoryDao();
+    when(() => likesHistoryDao.loadItems()).thenAnswer((_) async => Future.value(<LikeInteraction>[]));
     imagesNotifier = ImagesNotifier(value: AppState(dao: likesHistoryDao));
+    registerFallbackValue(LikeInteraction(imageInfo: ImageInfo(apiSource: AwailableAPIs.test, url: "", imageName: ""), actionTime: DateTime.now()));
   });
 
   tearDownAll(() {
@@ -35,6 +38,7 @@ void main() {
   });
 
   setUp(() {
+    reset(likesHistoryDao);
     imagesNotifier.value.localHistory = [];
     imagesNotifier.value.loadedImages = {};
   });
@@ -55,7 +59,7 @@ void main() {
 
       expect(imagesNotifier.value.localHistory.length, 0);
 
-      imagesNotifier.synchWithRepository();
+      await imagesNotifier.synchWithRepository();
       expect(imagesNotifier.value.localHistory.length, 2);
       verify(() => likesHistoryDao.loadItems()).called(1);
     },
@@ -83,107 +87,52 @@ void main() {
       );
 
       test(
-        'Неудачная подгрузка данных',
+        'Успешное удаление записей',
         () async {
-          // arrange
-          when(() => shoppingListDao.loadItems()).thenThrow(Exception());
+          when(() => likesHistoryDao.deleteItemByUrl(any())).thenAnswer(
+            (_) async {},
+          );
+          when(() => likesHistoryDao.saveItem(any())).thenAnswer(
+            (_) async {},
+          );
 
-          // act
-          await shoppingListManager.loadItems();
+          imagesNotifier.addLike(imageInfos[0]);
+          imagesNotifier.addDislike(imageInfos[1]);
+          imagesNotifier.removeInteractionEntry(imageInfos[0].url);
 
-          // assert
-          expect(shoppingListManager.state, equals(ShoppingListState.error));
+          expect(imagesNotifier.countOfLiked(), equals(0));
+          expect(imagesNotifier.countOfDisliked(), equals(1));
+          verify(() => likesHistoryDao.deleteItemByUrl(any())).called(1);
         },
       );
     },
   );
 
   group(
-    'Сохранение покупки',
+    'Работа с загруженными с API информациями о картинках',
     () {
-      const name = 'Ratatouille';
-      const name2 = 'Pizza';
-      const name3 = 'Ramen';
-      const item = ShoppingItem(
-        id: 'unique_id',
-        name: name,
-      );
-
-      setUp(() {
-        registerFallbackValue(item);
-      });
-
       test(
         'Удачное сохранение данных',
         () async {
-          // arrange
-          when(() => shoppingListDao.saveItem(any<ShoppingItem>()))
-              .thenAnswer((_) async {});
+          expect(imagesNotifier.getTopLoaded(AwailableAPIs.cats), isNull);
 
-          // act
-          await shoppingListManager.addItem(name);
+          await imagesNotifier.addLoadedInfo(imageInfos[0]);
+          await imagesNotifier.addLoadedInfo(imageInfos[1]);
 
-          // assert
-          expect(
-            shoppingListManager.items.map((item) => item.name).toList(),
-            contains(name),
-          );
-          expect(shoppingListManager.state, equals(ShoppingListState.idle));
-
-          final verification = verify(() => shoppingListDao
-              .saveItem(captureAny(that: isA<ShoppingItem>()))).captured;
-
-          expect(verification.first.name, name);
+          expect(imagesNotifier.getTopLoaded(AwailableAPIs.cats)!.url, equals(imageInfos[0].url));
+          expect(imagesNotifier.value.loadedImages[AwailableAPIs.cats]!.length, 2);
         },
       );
 
       test(
-        'При сохранении произошла ошибка',
+        'Удачное удаление',
         () async {
-          // arrange
-          when(() => shoppingListDao.saveItem(any())).thenThrow(Exception());
+          await imagesNotifier.addLoadedInfo(imageInfos[0]);
+          await imagesNotifier.addLoadedInfo(imageInfos[1]);
+          imagesNotifier.removeLoadedInfo(imageInfos[0]);
 
-          // act
-          await shoppingListManager.addItem(name2);
-
-          // assert
-          expect(
-            shoppingListManager.items.map((item) => item.name).toList(),
-            isNot(contains(name2)),
-          );
-          expect(shoppingListManager.state, equals(ShoppingListState.idle));
-
-          verify(() => shoppingListDao.saveItem(any())).called(1);
-        },
-      );
-
-      test(
-        'Нельзя вызвать сохранение дважды',
-        () {
-          // arrange
-          when(() => shoppingListDao.saveItem(any()))
-              .thenAnswer((_) => Future.delayed(const Duration(seconds: 3)));
-
-          // act
-          shoppingListManager.addItem(name3);
-          shoppingListManager.addItem(name3);
-
-          // assert
-          verify(() => shoppingListDao.saveItem(any())).called(1);
-        },
-      );
-
-      test(
-        'Нельзя сохранить вещь без имени',
-        () {
-          // arrange
-          when(() => shoppingListDao.saveItem(any())).thenAnswer((_) async {});
-
-          // act
-          shoppingListManager.addItem('');
-
-          // assert
-          verifyNever(() => shoppingListDao.saveItem(any()));
+          expect(imagesNotifier.getTopLoaded(AwailableAPIs.cats)!.url, equals(imageInfos[1].url));
+          expect(imagesNotifier.value.loadedImages[AwailableAPIs.cats]!.length, 1);
         },
       );
     },

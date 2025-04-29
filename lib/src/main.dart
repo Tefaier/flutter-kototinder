@@ -20,13 +20,13 @@ Future<void> initGetIt() async {
   getIt.registerSingleton<NavigationManager>(NavigationManager());
 }
 
-void main() {
+void main() async {
   initLogger();
   logger.info('Start main');
   ErrorHandler.init();
 
-  Future(() => initGetIt()).then((_) {
-    logger.info('App run');
-    runApp(const App());
-  });
+  await initGetIt();
+
+  logger.info('App run');
+  runApp(const App());
 }
