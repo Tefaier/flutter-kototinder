@@ -7,7 +7,6 @@ import 'package:flutter_hw_lototinder/src/domain/state/likes_history_notifier.da
 import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
 import 'package:flutter_hw_lototinder/src/domain/state/images_history_notifier.dart';
 import 'package:flutter_hw_lototinder/src/domain/state/images_loader.dart';
-import 'package:flutter_hw_lototinder/src/utils/logger.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/bottom_navigation_holder.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/logo_icon.dart';
 import 'package:get_it/get_it.dart';
