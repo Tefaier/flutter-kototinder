@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hw_lototinder/src/domain/model/awailable_apis.dart';
 import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart'
@@ -6,6 +7,7 @@ import 'package:flutter_hw_lototinder/src/domain/state/likes_history_notifier.da
 import 'package:flutter_hw_lototinder/src/navigation/navigation_manager.dart';
 import 'package:flutter_hw_lototinder/src/domain/state/images_history_notifier.dart';
 import 'package:flutter_hw_lototinder/src/domain/state/images_loader.dart';
+import 'package:flutter_hw_lototinder/src/utils/logger.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/bottom_navigation_holder.dart';
 import 'package:flutter_hw_lototinder/src/widget/components/logo_icon.dart';
 import 'package:get_it/get_it.dart';
@@ -103,6 +105,10 @@ class _MainPageState extends State<MainPageContent> {
         _notifier!.addLoadedInfo,
         () => loadError(chosenAPI));
     shownImage ??= _notifier!.value.loadedImages[chosenAPI]?.firstOrNull;
+    var loaded = _notifier?.value.loadedImages[chosenAPI] ?? [];
+    for (var elem in loaded) {
+      precacheImage(CachedNetworkImageProvider(elem.url), context);
+    }
   }
 
   @override
@@ -125,7 +131,6 @@ class _MainPageState extends State<MainPageContent> {
                     size: 25, color: Color.fromARGB(255, 0, 81, 255)),
                 number: _notifier!.countOfDisliked(),
                 onClick: () {
-                  loadNew();
                   likingAction(false);
                   destroyShown();
                 },
@@ -135,7 +140,6 @@ class _MainPageState extends State<MainPageContent> {
                     size: 25, color: Color.fromARGB(255, 255, 60, 0)),
                 number: _notifier!.countOfLiked(),
                 onClick: () {
-                  loadNew();
                   likingAction(true);
                   destroyShown();
                 },

@@ -4,6 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '/src/navigation/routes.dart';
 import '/src/navigation/navigation_manager.dart';
 import '/src/utils/app_theme.dart';
@@ -25,6 +26,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  late final SharedPreferences prefs;
   late final StreamSubscription<List<ConnectivityResult>> subscription;
   bool noConnection = false;
   bool isDark = false;
@@ -33,6 +35,7 @@ class _AppState extends State<App> {
     setState(() {
       isDark = !isDark;
     });
+    prefs.setBool("isDark", isDark);
   }
 
   @override
@@ -45,6 +48,12 @@ class _AppState extends State<App> {
         noConnection = newNoConnection;
         getIt<NavigationManager>().showSnackBar(newNoConnection ? "No internet connection" : "Internet connection detected");
       }
+    });
+    SharedPreferences.getInstance().then((inst) {
+      prefs = inst;
+      setState(() {
+        isDark = prefs.getBool("isDark") ?? false;
+      });
     });
   }
 

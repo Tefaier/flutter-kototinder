@@ -21,6 +21,7 @@ Future<void> initGetIt() async {
 }
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   initLogger();
   logger.info('Start main');
   ErrorHandler.init();

@@ -101,7 +101,7 @@ class _ImageSwapperState extends State<ImageSwapper> {
                               child: SizedBox(
                                   height: double.infinity,
                                   width: double.infinity,
-                                  child: LoadableImage(url: widget.imageSource, fit: BoxFit.cover))),
+                                  child: LoadableImage(key: ObjectKey(widget.imageSource), url: widget.imageSource, fit: BoxFit.cover))),
                           widget.basicDescription != null
                               ? LayoutBuilder(
                                   builder: (context, constraints) => Align(

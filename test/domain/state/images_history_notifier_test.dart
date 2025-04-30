@@ -116,8 +116,8 @@ void main() {
         () async {
           expect(imagesNotifier.getTopLoaded(AwailableAPIs.cats), isNull);
 
-          await imagesNotifier.addLoadedInfo(imageInfos[0]);
-          await imagesNotifier.addLoadedInfo(imageInfos[1]);
+          imagesNotifier.addLoadedInfo(imageInfos[0]);
+          imagesNotifier.addLoadedInfo(imageInfos[1]);
 
           expect(imagesNotifier.getTopLoaded(AwailableAPIs.cats)!.url, equals(imageInfos[0].url));
           expect(imagesNotifier.value.loadedImages[AwailableAPIs.cats]!.length, 2);
@@ -127,8 +127,8 @@ void main() {
       test(
         'Удачное удаление',
         () async {
-          await imagesNotifier.addLoadedInfo(imageInfos[0]);
-          await imagesNotifier.addLoadedInfo(imageInfos[1]);
+          imagesNotifier.addLoadedInfo(imageInfos[0]);
+          imagesNotifier.addLoadedInfo(imageInfos[1]);
           imagesNotifier.removeLoadedInfo(imageInfos[0]);
 
           expect(imagesNotifier.getTopLoaded(AwailableAPIs.cats)!.url, equals(imageInfos[1].url));

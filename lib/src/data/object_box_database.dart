@@ -2,6 +2,7 @@ import 'package:flutter_hw_lototinder/objectbox.g.dart';
 import 'package:flutter_hw_lototinder/src/data/likes_history_item_entity.dart';
 import 'package:flutter_hw_lototinder/src/domain/dao/likes_history_dao.dart';
 import 'package:flutter_hw_lototinder/src/domain/model/like_interaction.dart';
+import 'package:flutter_hw_lototinder/src/utils/logger.dart';
 
 
 class LikesHistoryObjectBoxDataBase implements LikesHistoryDao {
@@ -29,7 +30,11 @@ class LikesHistoryObjectBoxDataBase implements LikesHistoryDao {
 
     final entity = LikesHistoryItemEntity.fromModel(item);
 
-    box.put(entity);
+    try {
+      box.put(entity);
+    } catch (error) {
+      logger.info("Failed to push image with url ${item.imageInfo.url}");
+    }
   }
 
   @override

@@ -92,7 +92,7 @@ class _HistoryItem extends StatelessWidget {
                     onPressed: () => getIt<NavigationManager>()
                         .openDetails(interaction.imageInfo),
                     icon: LoadableImage(
-                        url: interaction.imageInfo.url, fit: BoxFit.fitHeight)),
+                        key: ObjectKey(interaction.imageInfo.url), url: interaction.imageInfo.url, fit: BoxFit.fitHeight)),
                 likeOrDislike,
                 ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 100),

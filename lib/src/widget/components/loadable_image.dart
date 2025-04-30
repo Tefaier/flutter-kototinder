@@ -26,15 +26,10 @@ class LoadableImage extends StatelessWidget {
             );
           },
           imageBuilder: (context, imageProvider) {
-            return TweenAnimationBuilder(
-                tween: Tween<double>(begin: 0.0, end: 1.0),
-                duration: const Duration(milliseconds: 200),
-                builder: (BuildContext context, double opacity, Widget? child) {
-                  return Opacity(opacity: opacity, child: child);
-                },
-                child: Image(
-                  image: imageProvider,
-                ));
+            return Image(
+              image: imageProvider,
+              fit: fit
+            );
           },
           errorWidget: (context, url, error) {
             getIt<NavigationManager>().showAlert(

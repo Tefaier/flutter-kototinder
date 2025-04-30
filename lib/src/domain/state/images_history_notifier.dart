@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_hw_lototinder/src/domain/model/app_state.dart';
 import 'package:flutter_hw_lototinder/src/domain/model/awailable_apis.dart';
 import 'package:flutter_hw_lototinder/src/domain/model/like_interaction.dart';
@@ -42,12 +41,9 @@ class ImagesNotifier extends ChangeNotifier {
     await value.dao.deleteItemByUrl(url);
   }
 
-  Future<void> addLoadedInfo(image_info.ImageInfo info) async {
+  void addLoadedInfo(image_info.ImageInfo info) async {
     value.loadedImages.putIfAbsent(info.apiSource, () => <image_info.ImageInfo>[]);
     value.loadedImages[info.apiSource]!.add(info);
-    if (!const bool.fromEnvironment('testing_mode', defaultValue: false)) {
-      await DefaultCacheManager().downloadFile(info.url);
-    }
     notifyListeners();
   }
 

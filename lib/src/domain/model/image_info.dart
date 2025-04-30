@@ -26,11 +26,12 @@ class ImageInfo {
   }
 
   factory ImageInfo.fromInfoItemEntity(ImageInfoItemEntity entity) {
+    Map<String, String> decoded = Map.castFrom(jsonDecode(entity.extraInfoMap));
     return ImageInfo(
         id: entity.id,
         apiSource: AwailableAPIs.values[entity.apiSourceID],
         url: entity.url,
         imageName: entity.imageName,
-        extraInfo: jsonDecode(entity.extraInfoMap) as Map<String, String>);
+        extraInfo: decoded);
   }
 }

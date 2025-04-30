@@ -16,6 +16,7 @@ class DetailsPage extends StatelessWidget {
       Flexible(
           flex: 2,
           child: LoadableImage(
+              key: ObjectKey(info.url),
               url: info.url,
               fit: MediaQuery.sizeOf(context).aspectRatio >= 1
                   ? BoxFit.fitHeight
@@ -33,53 +34,50 @@ class DetailsPage extends StatelessWidget {
                     ConstrainedBox(
                         constraints: BoxConstraints(
                             maxHeight: MediaQuery.sizeOf(context).height * 0.5),
-                        child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: RichText(
-                              text: TextSpan(
-                                  style: TextStyle(
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontSize: 16),
-                                  children: [
-                                    const TextSpan(
-                                        text: "Имя: ",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    TextSpan(text: '${info.imageName}\n'),
-                                    const TextSpan(
-                                        text: "Просхождение (страна): ",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    TextSpan(
-                                        text:
-                                            '${info.extraInfo?['origin'] ?? ''}\n'),
-                                    const TextSpan(
-                                        text: "Срок жизни: ",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    TextSpan(
-                                        text:
-                                            '${info.extraInfo?['lifespan'] ?? ''}\n'),
-                                    const TextSpan(
-                                        text: "Характеристики: ",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    TextSpan(
-                                        text:
-                                            '${info.extraInfo?['general'] ?? ''}\n'),
-                                    const TextSpan(
-                                        text: "Описание: ",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    TextSpan(
-                                        text: info.extraInfo?['description'] ??
-                                            '')
-                                  ]),
-                              softWrap: true,
-                            ))),
+                        child: RichText(
+                          text: TextSpan(
+                              style: TextStyle(
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 16),
+                              children: [
+                                const TextSpan(
+                                    text: "Имя: ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(text: '${info.imageName}\n'),
+                                const TextSpan(
+                                    text: "Просхождение (страна): ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                    text:
+                                        '${info.extraInfo?['origin'] ?? ''}\n'),
+                                const TextSpan(
+                                    text: "Срок жизни: ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                    text:
+                                        '${info.extraInfo?['lifespan'] ?? ''}\n'),
+                                const TextSpan(
+                                    text: "Характеристики: ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                    text:
+                                        '${info.extraInfo?['general'] ?? ''}\n'),
+                                const TextSpan(
+                                    text: "Описание: ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                    text: info.extraInfo?['description'] ?? '')
+                              ]),
+                          softWrap: true,
+                        )),
                     info.extraInfo?['adaptability'] != null
                         ? ProgressbarWithText(
                             text: "Адаптивность",
