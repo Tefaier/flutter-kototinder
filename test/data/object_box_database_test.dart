@@ -18,13 +18,15 @@ void main() {
   final imageInfos = imageUrls.map((e) => ImageInfo(apiSource: AwailableAPIs.cats, url: e, imageName: "cat", extraInfo: {})).toList();
 
   setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
     final objectBoxStore = await openStore(directory: 'test-db');
     dataBasePath = objectBoxStore.directoryPath;
     dataBase = LikesHistoryObjectBoxDataBase(objectBoxStore);
   });
 
-  tearDownAll(() {
-    Directory(dataBasePath).deleteSync(recursive: true);
+  tearDownAll(() async {
+    await dataBase.dispose();
+    await Directory(dataBasePath).delete(recursive: true);
   });
 
   setUp(() async {
