@@ -1,0 +1,87 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/app_state.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/awailable_apis.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/like_interaction.dart';
+import 'package:flutter_hw_lototinder/src/domain/model/image_info.dart' as image_info;
+
+class ImagesNotifier extends ChangeNotifier {
+  AppState value;
+
+  ImagesNotifier({required this.value}) {
+    synchWithRepository();
+  }
+
+  Future<void> synchWithRepository() async {
+    value.localHistory = await value.dao.loadItems();
+    notifyListeners();
+  }
+
+  void addLike(image_info.ImageInfo info) {
+    addInteractionEntry(info, true);
+  }
+
+  void addDislike(image_info.ImageInfo info) {
+    addInteractionEntry(info, false);
+  }
+
+  void addInteractionEntry(image_info.ImageInfo info, bool isLike) async {
+    var interaction = LikeInteraction(imageInfo: info, actionTime: DateTime.now(), isLike: isLike);
+    value.localHistory.add(interaction);
+    notifyListeners();
+
+    await value.dao.saveItem(LikeInteraction(imageInfo: info, actionTime: DateTime.now(), isLike: isLike));
+  }
+
+  void removeInteractionEntry(String url) async {
+    value.localHistory = value.localHistory.where((item) => item.imageInfo.url != url).toList();
+    notifyListeners();
+
+    await value.dao.deleteItemByUrl(url);
+  }
+
+  void addLoadedInfo(image_info.ImageInfo info) async {
+    value.loadedImages.putIfAbsent(info.apiSource, () => <image_info.ImageInfo>[]);
+    value.loadedImages[info.apiSource]!.add(info);
+    notifyListeners();
+  }
+
+  void removeLoadedInfo(image_info.ImageInfo info) {
+    value.loadedImages.putIfAbsent(info.apiSource, () => <image_info.ImageInfo>[]);
+    value.loadedImages[info.apiSource]!.removeWhere((item) => item.url == info.url);
+    notifyListeners();
+  }
+
+  int countOfLiked() {
+    return value.localHistory.where((item) => item.isLike).toList().length;
+  }
+
+  int countOfDisliked() {
+    return value.localHistory.where((item) => !item.isLike).toList().length;
+  }
+
+  image_info.ImageInfo? getTopLoaded(AwailableAPIs api) {
+    return value.loadedImages[api]?.firstOrNull;
+  }
+}
+
+class ImagesInheritedNotifier extends InheritedNotifier<ImagesNotifier> {
+  const ImagesInheritedNotifier({
+    super.key,
+    required super.notifier,
+    required super.child,
+  });
+
+  static ImagesNotifier of(BuildContext context) {
+    final result =
+        context.dependOnInheritedWidgetOfExactType<ImagesInheritedNotifier>();
+
+    final notifier = result?.notifier;
+    if (notifier == null) {
+      throw StateError('No ImagesInheritedNotifier found in context');
+    }
+
+    return notifier;
+  }
+}

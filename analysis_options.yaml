@@ -2,4 +2,5 @@ include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
-    - prefer_relative_imports
+    - avoid_multiple_declarations_per_line
+    - avoid_relative_lib_imports

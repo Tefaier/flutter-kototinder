@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class IconBurronCounter extends StatelessWidget {
+class IconButtonCounter extends StatelessWidget {
   final ImageIcon icon;
   final int number;
   final VoidCallback? onClick;
 
-  const IconBurronCounter(
+  const IconButtonCounter(
       {super.key, required this.icon, required this.number, this.onClick});
 
   @override

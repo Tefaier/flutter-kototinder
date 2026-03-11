@@ -1,0 +1,86 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:7691268481354856948",
+      "lastPropertyId": "5:8540511649516030524",
+      "name": "ImageInfoItemEntity",
+      "properties": [
+        {
+          "id": "1:8429859692799898352",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3783794103161416372",
+          "name": "apiSourceID",
+          "type": 6
+        },
+        {
+          "id": "3:3925802604291516562",
+          "name": "url",
+          "type": 9,
+          "flags": 2080,
+          "indexId": "2:2717195133478146980"
+        },
+        {
+          "id": "4:3544987833213303903",
+          "name": "imageName",
+          "type": 9
+        },
+        {
+          "id": "5:8540511649516030524",
+          "name": "extraInfoMap",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:8790852094190136273",
+      "lastPropertyId": "4:882528390767281548",
+      "name": "LikesHistoryItemEntity",
+      "properties": [
+        {
+          "id": "1:6681430632353259525",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3033082172979514996",
+          "name": "imageInfoId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:5005350882515269499",
+          "relationTarget": "ImageInfoItemEntity"
+        },
+        {
+          "id": "3:3969616646277635113",
+          "name": "actionTime",
+          "type": 10
+        },
+        {
+          "id": "4:882528390767281548",
+          "name": "isLike",
+          "type": 1
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:8790852094190136273",
+  "lastIndexId": "2:2717195133478146980",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
